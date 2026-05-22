@@ -267,7 +267,7 @@ const About = () => {
           </ImageWrapper>
           <TextColumn>
             <Bio ref={bioRef}>
-              I'm Rizvi Ahmed Abbas — a passionate software engineer with a solid background
+              I'm Rizvi Ahmed Abbas a passionate software engineer with a solid background
               in AI/ML, Automations, and a proven track record of winning hackathons. With
               expertise in Django frameworks, cloud platforms (AWS EC2, S3), and database
               management, I enjoy building scalable applications that drive user satisfaction
