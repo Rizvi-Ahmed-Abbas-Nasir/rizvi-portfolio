@@ -192,15 +192,16 @@ const AchievementItem = styled.div`
 `;
 
 const stats = [
-  { number: "3+", label: "Years Exp." },
+  { number: "2+", label: "Years Exp." },
   { number: "10+", label: "Projects" },
-  { number: "2", label: "Hackathon Wins" },
+  { number: "4", label: "Hackathon Wins" },
 ];
 
 const achievements = [
-  "Oscillation Hackathon Winner — Best Project Award",
-  "State Level Project Winner — Diploma in Computer Engineering",
-  "SIH Grand Finalist & CESA / CSI Tech Head",
+  "Smart India Hackathon (SIH) 2026 — Top 3 Team (National)",
+  "Oscillation Hackathon 2025 — 1st Place Winner",
+  "Nextech Hackathon 2024 — 1st Place Winner",
+  "Technothon 2023 — State Level Project Winner",
 ];
 
 const About = () => {

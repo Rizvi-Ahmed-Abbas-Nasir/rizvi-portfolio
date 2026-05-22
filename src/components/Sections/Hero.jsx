@@ -18,7 +18,7 @@ const Section = styled.section`
   justify-content: flex-end;
   overflow: hidden;
   padding: 0;
-  background: #080705;
+  background: #040302;
 `;
 
 const GridCanvas = styled.canvas`
@@ -33,7 +33,7 @@ const GridCanvas = styled.canvas`
 const Vignette = styled.div`
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 50% 50%, transparent 40%, #080705 100%);
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, transparent 40%, #040302 100%);
   pointer-events: none;
   z-index: 1;
 `;
@@ -264,6 +264,9 @@ const Hero = () => {
   const line1Ref    = useRef(null);
   const line2Ref    = useRef(null);
   const line3Ref    = useRef(null);
+  const line1ParallaxRef = useRef(null);
+  const line2ParallaxRef = useRef(null);
+  const line3ParallaxRef = useRef(null);
   const wordInnerRef = useRef(null);
   const rafRef      = useRef(null);
 
@@ -298,7 +301,7 @@ const Hero = () => {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     let W, H, dots, mouse = { x: -9999, y: -9999 };
-    const GAP = 40, R = 1.2, INF = 130;
+    const GAP = 40, R = 1.5, INF = 130;
 
     const build = () => {
       W = canvas.width = canvas.offsetWidth;
@@ -327,7 +330,7 @@ const Hero = () => {
         d.vx += (d.ox - d.x)*0.04; d.vy += (d.oy - d.y)*0.04;
         d.vx *= 0.82; d.vy *= 0.82;
         d.x += d.vx; d.y += d.vy;
-        const br = dist < INF ? 0.05 + (1-dist/INF)*0.2 : 0.05;
+        const br = dist < INF ? 0.12 + (1-dist/INF)*0.26 : 0.12;
         ctx.beginPath();
         ctx.arc(d.x, d.y, R, 0, Math.PI*2);
         ctx.fillStyle = `rgba(201,168,76,${br})`;
@@ -347,7 +350,24 @@ const Hero = () => {
   /* ── Magnetic lines ── */
   useEffect(() => {
     const lines = [line1Ref.current, line2Ref.current, line3Ref.current];
+    let active = true;
+
+    // Monitor viewport presence to prevent vertical offset errors on scroll
+    const st = ScrollTrigger.create({
+      trigger: "#hero",
+      start: "top top",
+      end: "bottom top",
+      onLeave: () => {
+        active = false;
+        onLeave();
+      },
+      onEnterBack: () => {
+        active = true;
+      },
+    });
+
     const onMove = (e) => {
+      if (!active) return;
       lines.forEach((el, i) => {
         if (!el) return;
         const rect = el.getBoundingClientRect();
@@ -365,6 +385,7 @@ const Hero = () => {
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseleave", onLeave);
     return () => {
+      st.kill();
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseleave", onLeave);
     };
@@ -373,9 +394,9 @@ const Hero = () => {
   /* ── Scroll parallax — starts at x:0 so load position is always aligned ── */
   useEffect(() => {
     [
-      { el: line1Ref.current, x:  30 },
-      { el: line2Ref.current, x: -20 },
-      { el: line3Ref.current, x:  25 },
+      { el: line1ParallaxRef.current, x:  30 },
+      { el: line2ParallaxRef.current, x: -20 },
+      { el: line3ParallaxRef.current, x:  25 },
     ].forEach(({ el, x }) => {
       if (!el) return;
       gsap.fromTo(el,
@@ -492,9 +513,11 @@ const Hero = () => {
         {/* Name label aligned with title */}
         <NameLabel ref={nameLabelRef}>Rizvi Ahmed Abbas</NameLabel>
 
-        <TitleLine ref={line1Ref}>
-          <TitleOutlined>I&nbsp;Build</TitleOutlined>
-        </TitleLine>
+        <div ref={line1ParallaxRef}>
+          <TitleLine ref={line1Ref}>
+            <TitleOutlined>I&nbsp;Build</TitleOutlined>
+          </TitleLine>
+        </div>
 
         <SubRow ref={subRowRef}>
           <SubDesc>
@@ -509,15 +532,19 @@ const Hero = () => {
         </SubRow>
 
         {/* CRAFT & animated short word */}
-        <TitleLine ref={line2Ref}>
-          <TitleFilled>
-            Craft&nbsp;&amp;&nbsp;<WordInner ref={wordInnerRef}>{WORDS[wordIdx]}</WordInner>
-          </TitleFilled>
-        </TitleLine>
+        <div ref={line2ParallaxRef}>
+          <TitleLine ref={line2Ref}>
+            <TitleFilled>
+              Craft&nbsp;&amp;&nbsp;<WordInner ref={wordInnerRef}>{WORDS[wordIdx]}</WordInner>
+            </TitleFilled>
+          </TitleLine>
+        </div>
 
-        <TitleLine ref={line3Ref}>
-          <TitleOutlined>Products</TitleOutlined>
-        </TitleLine>
+        <div ref={line3ParallaxRef}>
+          <TitleLine ref={line3Ref}>
+            <TitleOutlined>Products</TitleOutlined>
+          </TitleLine>
+        </div>
 
       </TitleArea>
 
@@ -525,7 +552,7 @@ const Hero = () => {
       <BottomStrip ref={bottomRef}>
         <BottomItem>Mumbai, India · <span>2026</span></BottomItem>
         <BottomItem>Full Stack · AI / ML · Automation</BottomItem>
-        <BottomItem><span>3+</span> Yrs Exp.</BottomItem>
+        <BottomItem><span>2+</span> Yrs Exp.</BottomItem>
         <ScrollCue onClick={() => document.querySelector("#about")?.scrollIntoView({ behavior:"smooth" })}>
           <span className="arrow">↓</span>
           Scroll
