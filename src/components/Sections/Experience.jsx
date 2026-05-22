@@ -126,9 +126,8 @@ const Achievements = styled.ul`
 `;
 
 const Achievement = styled.li`
-  display: flex;
-  gap: 0.8rem;
-  align-items: flex-start;
+  position: relative;
+  padding-left: 1.25rem;
   font-family: var(--font-body);
   font-size: 0.9rem;
   line-height: 1.65;
@@ -136,10 +135,11 @@ const Achievement = styled.li`
 
   &::before {
     content: '—';
+    position: absolute;
+    left: 0;
+    top: 0;
     color: var(--accent-gold);
     opacity: 0.6;
-    flex-shrink: 0;
-    margin-top: 0.05rem;
   }
 
   strong {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useContextProvider } from '../../../utils/GlobleContextProvider';
 import SplitType from 'split-type';
@@ -7,18 +7,81 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ── Project image imports (from assets/projects) ── */
-import cleverstudio1   from '../../../assets/projects/cleverstudio -1.png';
-import dwarentacar1    from '../../../assets/projects/dwarentacar - 1.png';
-import oaktree1        from '../../../assets/projects/oak free - 1.png';
-import rikoAI          from '../../../assets/projects/AI RIKO.png';
-import cesaCSI         from '../../../assets/projects/cesa csi.png';
-import evoherbals      from '../../../assets/portfolio/evoherbals.png';
-import milesIndia      from '../../../assets/projects/MILES INDAI.png';
-import azzirevents     from '../../../assets/projects/AZZIR -1.png';
-import meabmc          from '../../../assets/projects/imprtant mea bmc.png';
-import aiDesktop       from '../../../assets/projects/AI Agent Linkedin Lead gen.png';
-import oncology        from '../../../assets/projects/SEO Keyword Ranking Tracking.png';
+/* ── Multi-image imports per project ── */
+
+// MEA BMC
+import meabmc1  from '../../../assets/projects/imprtant mea bmc.png';
+import meabmc2  from '../../../assets/projects/mea bmc- 2.png';
+import meabmc3  from '../../../assets/projects/mea bmc- 2 (2).png';
+import meabmc4  from '../../../assets/projects/mea bmc- 2 (3).png';
+
+// CleverStudio
+import clever1  from '../../../assets/projects/cleverstudio -1.png';
+import clever2  from '../../../assets/projects/cleverstudio - 2.png';
+import clever3  from '../../../assets/projects/cleverstudio - 3.png';
+import clever4  from '../../../assets/projects/cleverstudio - 4.png';
+import clever5  from '../../../assets/projects/cleverstudio - 5.png';
+import clever6  from '../../../assets/projects/cleverstudio - 6.png';
+import clever7  from '../../../assets/projects/cleverstudio - 7.png';
+
+// Dware Rent a Car
+import dware1   from '../../../assets/projects/dwarentacar - 1.png';
+import dware2   from '../../../assets/projects/dwarentacar - 2.png';
+import dware3   from '../../../assets/projects/dwarentacar - 3.png';
+import dware4   from '../../../assets/projects/dwarentacar - 4.png';
+import dware5   from '../../../assets/projects/dwarentacar - 5.png';
+import dware6   from '../../../assets/projects/dwarentacar - 6.png';
+import dware7   from '../../../assets/projects/dwarentacar - 7.png';
+import dware8   from '../../../assets/projects/dwarentacar - 8.png';
+import dware9   from '../../../assets/projects/dwarentacar - 9.png';
+import dware10  from '../../../assets/projects/dwarentacar 10.png';
+
+// Miles India
+import miles1   from '../../../assets/projects/MILES INDAI.png';
+import miles2   from '../../../assets/projects/MILES INDAI -2.png';
+import miles3   from '../../../assets/projects/MILES INDAI -3.png';
+import miles4   from '../../../assets/projects/miles inda 3.png';
+import miles5   from '../../../assets/projects/miles indai 4.png';
+
+// Thinkbar
+import thinkbar1 from '../../../assets/projects/thinkbar 1.png';
+import thinkbar2 from '../../../assets/projects/thinkbar 2.png';
+import thinkbar3 from '../../../assets/projects/thinkbar 3.png';
+import thinkbar4 from '../../../assets/projects/thinkbar 4.png';
+import thinkbar7 from '../../../assets/projects/thinkbar 7.png';
+import thinkbar9 from '../../../assets/projects/thinkbar 9.png';
+
+// RIKO AI
+import rikoAI1  from '../../../assets/projects/AI RIKO.png';
+import rikoAI2  from '../../../assets/projects/AI RIKO -2.png';
+
+// CESA CSI
+import cesa1    from '../../../assets/projects/cesa csi.png';
+import cesa2    from '../../../assets/projects/CESA CSI -2.png';
+import cesa3    from '../../../assets/projects/CESA CSI -3.png';
+import cesa4    from '../../../assets/projects/CESA CSI - 4.png';
+import cesa5    from '../../../assets/projects/CESA CSI COMMUNITE -1.png';
+
+// Azzirevents
+import azzir1   from '../../../assets/projects/AZZIR -1.png';
+import azzir2   from '../../../assets/projects/AZZIR -2.png';
+import azzir3   from '../../../assets/projects/AZZIR -3.png';
+import azzir4   from '../../../assets/projects/AZZIR -4.png';
+
+// Oaktree
+import oak1     from '../../../assets/projects/oak free - 1.png';
+import oak2     from '../../../assets/projects/oaktree - 2.png';
+import oak3     from '../../../assets/projects/oaktree - 3.png';
+
+// EvoHerbals
+import evoherbals from '../../../assets/portfolio/evoherbals.png';
+
+// Automation
+import aiLinkedin  from '../../../assets/projects/AI Agent Linkedin Lead gen.png';
+import seoTracking from '../../../assets/projects/SEO Keyword Ranking Tracking.png';
+import redditAuto  from '../../../assets/projects/reddit autotmation lead gen.png';
+import upworkLead  from '../../../assets/projects/upwork lead gen.png';
+import linkedLead  from '../../../assets/projects/linked lead gen.png';
 
 /* ─────────────────── Styled Components ─────────────────── */
 
@@ -37,7 +100,6 @@ const Header = styled.div`
   overflow: hidden;
 `;
 
-/* Clip wrapper for the bottom-to-top reveal */
 const TitleClip = styled.div`
   overflow: hidden;
   display: block;
@@ -51,7 +113,6 @@ const Title = styled.h2`
   letter-spacing: -1px;
   line-height: 1;
   color: var(--text-primary);
-  /* each .char will be clipped by its parent overflow:hidden wrapper */
   .char {
     display: inline-block;
     will-change: transform, opacity;
@@ -59,7 +120,6 @@ const Title = styled.h2`
   .italic { font-style: italic; color: var(--accent-gold); }
 `;
 
-/* ── Category filter tabs ── */
 const FilterRow = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -85,7 +145,6 @@ const FilterBtn = styled.button`
   }
 `;
 
-/* ── Masonry-style 2-col grid ── */
 const ProjectGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -114,10 +173,6 @@ const ProjectCard = styled.div`
     box-shadow: 0 12px 48px rgba(201,168,76,0.08);
   }
 
-  &:hover .card-image img {
-    transform: scale(1.04);
-    filter: sepia(0.05) contrast(1.08) brightness(1.05);
-  }
   &:hover .card-overlay { opacity: 1; }
   &:hover .card-meta {
     transform: translateY(0);
@@ -125,6 +180,7 @@ const ProjectCard = styled.div`
   }
 `;
 
+/* Image wrapper with cross-fade layers */
 const CardImage = styled.div`
   width: 100%;
   aspect-ratio: 16 / 10;
@@ -132,16 +188,27 @@ const CardImage = styled.div`
   position: relative;
   border-radius: 8px;
   border: 1px solid rgba(201,168,76,0.08);
+`;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
-    display: block;
-    transition: transform 0.6s var(--ease-out-expo, cubic-bezier(0.16,1,0.3,1)),
-                filter 0.4s ease;
-    filter: sepia(0.06) contrast(1.03) brightness(0.96);
+/* Each image layer sits absolutely */
+const ImgLayer = styled.img`
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  filter: sepia(0.06) contrast(1.03) brightness(0.96);
+  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: ${({ $active }) => $active ? 1 : 0};
+  transform: ${({ $active }) => $active ? 'scale(1.0)' : 'scale(1.04)'};
+  will-change: opacity, transform;
+
+  /* Slight scale-up when card hovered */
+  ${ProjectCard}:hover & {
+    filter: sepia(0.05) contrast(1.08) brightness(1.05);
   }
 `;
 
@@ -152,6 +219,29 @@ const CardOverlay = styled.div`
   opacity: 0.7;
   transition: opacity 0.4s ease;
   z-index: 1;
+`;
+
+/* Small image dot indicators */
+const ImgDots = styled.div`
+  position: absolute;
+  bottom: 0.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  ${ProjectCard}:hover & { opacity: 1; }
+`;
+
+const ImgDot = styled.span`
+  width: ${({ $active }) => $active ? '16px' : '5px'};
+  height: 5px;
+  border-radius: 3px;
+  background: ${({ $active }) => $active ? 'var(--accent-gold)' : 'rgba(201,168,76,0.35)'};
+  transition: all 0.35s ease;
 `;
 
 const ViewPill = styled.div`
@@ -289,32 +379,55 @@ const OrnamentRow = styled.div`
 
 /* ─────────────────── Project Data ─────────────────── */
 const allProjects = [
+  // ── REQUESTED ORDER: MEA BMC first ──
+  {
+    category: "Full Stack Web",
+    name: "MEA BMC — Government Dashboard",
+    year: "2025",
+    tech: ["Next.js", "Node.js", "MySQL", "JWT"],
+    metric: { val: "Gov", lbl: "Prod" },
+    imgs: [meabmc1, meabmc2, meabmc3, meabmc4],
+    url: "https://meabmc.com/",
+  },
+  // ── CleverStudio second ──
   {
     category: "Full Stack Web",
     name: "Clever Studio Agency",
     year: "2024",
     tech: ["Next.js", "React", "Node.js", "Tailwind"],
     metric: { val: "Live", lbl: "Production" },
-    img: cleverstudio1,
+    imgs: [clever1, clever2, clever3, clever4, clever5, clever6, clever7],
     url: "https://cleverstudio.in/",
   },
+  // ── Dware Rent a Car third ──
   {
     category: "Full Stack Web",
     name: "Dwarentacar — Car Rental Platform",
     year: "2024",
     tech: ["React", "Node.js", "Express", "MongoDB"],
     metric: { val: "UAE", lbl: "Market" },
-    img: dwarentacar1,
+    imgs: [dware1, dware2, dware3, dware4, dware5, dware6, dware7, dware8, dware9, dware10],
     url: "https://www.dwarentacar.ae/",
   },
+  // ── Miles India fourth ──
   {
     category: "Full Stack Web",
-    name: "Oaktree — Premium Platform",
+    name: "Miles India — Travel Platform",
     year: "2024",
-    tech: ["Next.js", "React", "MySQL"],
+    tech: ["React", "Node.js", "MySQL", "AWS"],
     metric: { val: "Live", lbl: "Production" },
-    img: oaktree1,
-    url: "https://www.oaktree.in/",
+    imgs: [miles1, miles2, miles3, miles4, miles5],
+    url: "https://milesindia.in/",
+  },
+  // ── Thinkbar fifth (NEW) ──
+  {
+    category: "Full Stack Web",
+    name: "Thinkbar — AI-Powered Agency",
+    year: "2026",
+    tech: ["Next.js", "n8n", "AI/LLM", "Node.js"],
+    metric: { val: "Live", lbl: "Production" },
+    imgs: [thinkbar1, thinkbar2, thinkbar3, thinkbar4, thinkbar7, thinkbar9],
+    url: "https://www.thinkbar.in/",
   },
   {
     category: "AI & RAG",
@@ -322,7 +435,7 @@ const allProjects = [
     year: "2025",
     tech: ["Next.js", "OpenAI", "LangChain", "RAG"],
     metric: { val: "AI", lbl: "Powered" },
-    img: rikoAI,
+    imgs: [rikoAI1, rikoAI2],
     url: "https://riko-ai-delta.vercel.app/",
   },
   {
@@ -331,26 +444,8 @@ const allProjects = [
     year: "2024",
     tech: ["React", "Node.js", "MongoDB"],
     metric: { val: "2", lbl: "Dashboards" },
-    img: cesaCSI,
+    imgs: [cesa1, cesa2, cesa3, cesa4, cesa5],
     url: "https://cesa-csi-pvppcoe.vercel.app/",
-  },
-  {
-    category: "Full Stack Web",
-    name: "EvoHerbals — E-Commerce",
-    year: "2023",
-    tech: ["Next.js", "Shopify API", "Tailwind"],
-    metric: { val: "Live", lbl: "Store" },
-    img: evoherbals,
-    url: "https://evoherbals.com/",
-  },
-  {
-    category: "Full Stack Web",
-    name: "Miles India — Travel Platform",
-    year: "2024",
-    tech: ["React", "Node.js", "MySQL", "AWS"],
-    metric: { val: "Live", lbl: "Production" },
-    img: milesIndia,
-    url: "https://milesindia.in/",
   },
   {
     category: "Full Stack Web",
@@ -358,41 +453,156 @@ const allProjects = [
     year: "2025",
     tech: ["Next.js", "Node.js", "Stripe", "MongoDB"],
     metric: { val: "Live", lbl: "Events" },
-    img: azzirevents,
+    imgs: [azzir1, azzir2, azzir3, azzir4],
     url: "https://azzirevents.com/",
   },
   {
     category: "Full Stack Web",
-    name: "MEA BMC — Government Dashboard",
-    year: "2025",
-    tech: ["Next.js", "Node.js", "MySQL", "JWT"],
-    metric: { val: "Gov", lbl: "Prod" },
-    img: meabmc,
-    url: "https://meabmc.com/",
+    name: "Oaktree — Premium Platform",
+    year: "2024",
+    tech: ["Next.js", "React", "MySQL"],
+    metric: { val: "Live", lbl: "Production" },
+    imgs: [oak1, oak2, oak3],
+    url: "https://www.oaktree.in/",
   },
   {
-    category: "AI & RAG",
-    name: "n8n AI Lead Generation Agent",
+    category: "Full Stack Web",
+    name: "EvoHerbals — E-Commerce",
+    year: "2023",
+    tech: ["Next.js", "Shopify API", "Tailwind"],
+    metric: { val: "Live", lbl: "Store" },
+    imgs: [evoherbals],
+    url: "https://evoherbals.com/",
+  },
+  // ── Automation projects ──
+  {
+    category: "Automation",
+    name: "LinkedIn AI Lead Generation Agent",
     year: "2025",
     tech: ["n8n", "AI/LLM", "Browser Agent", "Webhooks"],
     metric: { val: "100+", lbl: "Leads" },
-    img: aiDesktop,
+    imgs: [aiLinkedin],
     url: null,
   },
   {
-    category: "AI & RAG",
+    category: "Automation",
     name: "SEO Keyword Ranking Tracker",
     year: "2025",
     tech: ["n8n", "DataForSEO", "Google Sheets", "Automation"],
     metric: { val: "Auto", lbl: "Tracking" },
-    img: oncology,
+    imgs: [seoTracking],
+    url: null,
+  },
+  {
+    category: "Automation",
+    name: "Reddit Automation Lead Gen",
+    year: "2025",
+    tech: ["n8n", "Reddit API", "AI/LLM", "Automation"],
+    metric: { val: "Auto", lbl: "Sourcing" },
+    imgs: [redditAuto],
+    url: null,
+  },
+  {
+    category: "Automation",
+    name: "Upwork Lead Generation Bot",
+    year: "2025",
+    tech: ["n8n", "Upwork API", "AI/LLM", "Webhooks"],
+    metric: { val: "Auto", lbl: "Outreach" },
+    imgs: [upworkLead],
+    url: null,
+  },
+  {
+    category: "Automation",
+    name: "LinkedIn Lead Gen Pipeline",
+    year: "2025",
+    tech: ["n8n", "LinkedIn API", "AI/LLM", "CRM"],
+    metric: { val: "Auto", lbl: "Pipeline" },
+    imgs: [linkedLead],
     url: null,
   },
 ];
 
 const categories = ["All", "Full Stack Web", "AI & RAG", "Automation"];
 
-/* ─────────────────── Component ─────────────────── */
+/* ─────────────────── ProjectCardItem (hover cross-fade) ─────────────────── */
+const ProjectCardItem = ({ project, cardRef, onClick }) => {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const intervalRef = useRef(null);
+
+  const startCycle = useCallback(() => {
+    if (project.imgs.length <= 1) return;
+    intervalRef.current = setInterval(() => {
+      setActiveIdx((prev) => (prev + 1) % project.imgs.length);
+    }, 1200);
+  }, [project.imgs.length]);
+
+  const stopCycle = useCallback(() => {
+    clearInterval(intervalRef.current);
+    setActiveIdx(0);
+  }, []);
+
+  useEffect(() => {
+    if (isHovered) {
+      startCycle();
+    } else {
+      stopCycle();
+    }
+    return () => clearInterval(intervalRef.current);
+  }, [isHovered, startCycle, stopCycle]);
+
+  return (
+    <ProjectCard
+      ref={cardRef}
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <CardImage className="card-image">
+        {project.imgs.map((src, i) => (
+          <ImgLayer
+            key={i}
+            src={src}
+            alt={`${project.name} screenshot ${i + 1}`}
+            $active={i === activeIdx}
+          />
+        ))}
+        <CardOverlay className="card-overlay" />
+        <ViewPill>{project.url ? 'Visit →' : 'Preview'}</ViewPill>
+
+        {/* Dot indicators — only show if multiple images */}
+        {project.imgs.length > 1 && (
+          <ImgDots>
+            {project.imgs.map((_, i) => (
+              <ImgDot key={i} $active={i === activeIdx} />
+            ))}
+          </ImgDots>
+        )}
+
+        <CardMeta className="card-meta">
+          <CardCategory>{project.category}</CardCategory>
+          <CardName>{project.name}</CardName>
+          <TechRow>
+            {project.tech.map((t) => <TechTag key={t}>{t}</TechTag>)}
+          </TechRow>
+        </CardMeta>
+      </CardImage>
+
+      <CardFooter>
+        <CardInfo>
+          <CardTitle>{project.name}</CardTitle>
+          <CardYear>{project.year} · {project.category}</CardYear>
+        </CardInfo>
+        <CardMetric>
+          <div className="val">{project.metric.val}</div>
+          <div className="lbl">{project.metric.lbl}</div>
+        </CardMetric>
+      </CardFooter>
+    </ProjectCard>
+  );
+};
+
+/* ─────────────────── Main Component ─────────────────── */
 const PortfolioSection = () => {
   const { setCursorSettings } = useContextProvider();
   const titleRef     = useRef(null);
@@ -409,7 +619,6 @@ const PortfolioSection = () => {
 
     const split = SplitType.create(titleRef.current, { types: 'chars,words' });
 
-    // Each char starts below its clip boundary and rises into view
     gsap.set(split.chars, { yPercent: 110, opacity: 0 });
 
     const tween = gsap.to(split.chars, {
@@ -458,7 +667,6 @@ const PortfolioSection = () => {
       <Inner>
         <div className="section-label">Portfolio</div>
         <Header>
-          {/* Clip wrapper provides the mask for bottom-to-top reveal */}
           <TitleClip>
             <Title ref={titleRef}>
               Featured <span className="italic">Projects</span>
@@ -480,35 +688,12 @@ const PortfolioSection = () => {
 
         <ProjectGrid>
           {filtered.map((project, index) => (
-            <ProjectCard
+            <ProjectCardItem
               key={project.name}
-              ref={(el) => (cardsRef.current[index] = el)}
+              project={project}
+              cardRef={(el) => (cardsRef.current[index] = el)}
               onClick={() => project.url && window.open(project.url, '_blank')}
-            >
-              <CardImage className="card-image">
-                <img src={project.img} alt={project.name} />
-                <CardOverlay className="card-overlay" />
-                <ViewPill>{project.url ? 'Visit →' : 'Preview'}</ViewPill>
-                <CardMeta className="card-meta">
-                  <CardCategory>{project.category}</CardCategory>
-                  <CardName>{project.name}</CardName>
-                  <TechRow>
-                    {project.tech.map((t) => <TechTag key={t}>{t}</TechTag>)}
-                  </TechRow>
-                </CardMeta>
-              </CardImage>
-
-              <CardFooter>
-                <CardInfo>
-                  <CardTitle>{project.name}</CardTitle>
-                  <CardYear>{project.year} · {project.category}</CardYear>
-                </CardInfo>
-                <CardMetric>
-                  <div className="val">{project.metric.val}</div>
-                  <div className="lbl">{project.metric.lbl}</div>
-                </CardMetric>
-              </CardFooter>
-            </ProjectCard>
+            />
           ))}
         </ProjectGrid>
 

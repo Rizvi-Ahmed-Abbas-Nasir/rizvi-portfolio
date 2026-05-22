@@ -274,18 +274,18 @@ const CountText = styled.span`
 
 /* ──────────── Data ──────────── */
 const WINS = [
-  { medal: '🥇', event: 'Smart India Hackathon',   prize: '1st Place — National',    year: '2023' },
-  { medal: '🏆', event: 'VPPCOE Tech Fest Hack',   prize: 'Winner — Best Innovation', year: '2024' },
-  { medal: '🥇', event: 'IEEE APSIT Hackathon',     prize: '1st Place — Regional',    year: '2024' },
-  { medal: '🏅', event: 'Hack-the-Future Summit',  prize: 'Top 3 — AI Track',        year: '2025' },
+  { medal: '🏆', event: 'Technothon',                   prize: 'State Level Project Winner', year: '2023' },
+  { medal: '🥇', event: 'Nextech Hackathon',            prize: '1st Place Winner',           year: '2024' },
+  { medal: '🥇', event: 'Oscillation Hackathon',        prize: '1st Place Winner',           year: '2025' },
+  { medal: '🏅', event: 'Smart India Hackathon (SIH)',  prize: 'Top 3 Team — National',      year: '2026' },
 ];
 
 /* Each "slide" groups photos by event */
 const SLIDES = [
-  { label: 'Smart India Hackathon 2023', title: '🥇 National Level — 1st Place',   imgs: [hack1, hack2, hack3, hack4] },
-  { label: 'VPPCOE Tech Fest 2024',      title: '🏆 Best Innovation Award',          imgs: [hack5, hack6, hack7, hack8] },
-  { label: 'IEEE APSIT Hackathon 2024',  title: '🥇 Regional Level — 1st Place',   imgs: [hack9, hack10, hack11, hack12] },
-  { label: 'Hack-the-Future Summit 2025',title: '🏅 AI Track — Top 3 Finish',       imgs: [hack13, hack14, hack15, hack16] },
+  { label: 'Technothon 2023',                   title: '🏆 State Level Project Winner', imgs: [hack1, hack2, hack3, hack4] },
+  { label: 'Nextech Hackathon 2024',            title: '🥇 1st Place Winner',           imgs: [hack5, hack6, hack7, hack8] },
+  { label: 'Oscillation Hackathon 2025',        title: '🥇 1st Place Winner',           imgs: [hack9, hack10, hack11, hack12] },
+  { label: 'Smart India Hackathon (SIH) 2026',  title: '🏅 Top 3 Team — National',      imgs: [hack13, hack14, hack15, hack16, hack17, hack18, hack19, hack20] },
 ];
 
 /* Flatten: one slide per image but grouped captions */
