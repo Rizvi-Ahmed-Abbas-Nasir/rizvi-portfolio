@@ -119,7 +119,7 @@ const CustomCursor = () => {
           borderRadius: '50%',
           background: '#c9a84c',
           pointerEvents: 'none',
-          zIndex: 99999,
+          zIndex: 1000001,
           transition: 'width 0.2s ease, height 0.2s ease, background 0.2s ease',
           boxShadow: '0 0 10px rgba(201,168,76,0.6), 0 0 25px rgba(201,168,76,0.3)',
           willChange: 'transform',
@@ -138,7 +138,7 @@ const CustomCursor = () => {
           height: '100%',
           backgroundColor: 'transparent',
           cursor: 'none',
-          zIndex: 99998,
+          zIndex: 1000000,
           pointerEvents: 'none',
         }}
       />

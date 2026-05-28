@@ -220,7 +220,7 @@ const SocialLink = [
 ];
 
 const Navbar = () => {
-  const { setCursorSettings } = useContextProvider();
+  const { setCursorSettings, locoScroll } = useContextProvider();
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const menuRef = useRef(null);
@@ -243,8 +243,12 @@ const Navbar = () => {
   const handleNavClick = (e, href) => {
     if (href.startsWith("#")) {
       e.preventDefault();
-      const el = document.querySelector(href);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+      if (locoScroll) {
+        locoScroll.scrollTo(href, { offset: -60 });
+      } else {
+        const el = document.querySelector(href);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }
       if (isOpen) toggleMenu();
     }
   };

@@ -38,28 +38,7 @@ const Vignette = styled.div`
   z-index: 1;
 `;
 
-/* Top-right dot only */
-const TopRight = styled.div`
-  position: absolute;
-  top: 2rem;
-  right: 8rem; /* sits left of the MENU button */
-  z-index: 10;
-  opacity: 0;
-  display: flex;
-  align-items: center;
 
-  .dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: #4ade80;
-    box-shadow: 0 0 10px rgba(74,222,128,0.8);
-    animation: pdot 2.5s ease-in-out infinite;
-  }
-  @keyframes pdot {
-    0%,100% { opacity:1; box-shadow:0 0 10px rgba(74,222,128,0.8); }
-    50%      { opacity:0.5; box-shadow:0 0 18px rgba(74,222,128,0.3); }
-  }
-`;
 
 /* Main content area */
 const TitleArea = styled.div`
@@ -247,28 +226,27 @@ const CircleCenter = styled.div`
 ───────────────────────────────────────── */
 /* Short words — max 5 chars so they never cause overflow */
 const WORDS = ["SHIP", "CODE", "BUILD", "RUN", "FIX", "TEST"];
-const tags = ["React.js","Node.js","Django","AI/ML","AWS","n8n","Docker","Next.js"];
+const tags = ["React.js", "Node.js", "Django", "AI/ML", "AWS", "n8n", "Docker", "Next.js"];
 
 /* ─────────────────────────────────────────
    Component
 ───────────────────────────────────────── */
 const Hero = () => {
-  const { preloader } = useContextProvider();
-  const canvasRef   = useRef(null);
-  const topRightRef = useRef(null);
+  const { preloader, locoScroll } = useContextProvider();
+  const canvasRef = useRef(null);
   const nameLabelRef = useRef(null);
-  const subRowRef   = useRef(null);
-  const bottomRef   = useRef(null);
-  const badgeRef    = useRef(null);
-  const tagsRef     = useRef([]);
-  const line1Ref    = useRef(null);
-  const line2Ref    = useRef(null);
-  const line3Ref    = useRef(null);
+  const subRowRef = useRef(null);
+  const bottomRef = useRef(null);
+  const badgeRef = useRef(null);
+  const tagsRef = useRef([]);
+  const line1Ref = useRef(null);
+  const line2Ref = useRef(null);
+  const line3Ref = useRef(null);
   const line1ParallaxRef = useRef(null);
   const line2ParallaxRef = useRef(null);
   const line3ParallaxRef = useRef(null);
   const wordInnerRef = useRef(null);
-  const rafRef      = useRef(null);
+  const rafRef = useRef(null);
 
   const [wordIdx, setWordIdx] = useState(0);
 
@@ -301,15 +279,15 @@ const Hero = () => {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     let W, H, dots, mouse = { x: -9999, y: -9999 };
-    const GAP = 40, R = 1.5, INF = 130;
+    const GAP = 40, R = 2.2, INF = 130;
 
     const build = () => {
       W = canvas.width = canvas.offsetWidth;
       H = canvas.height = canvas.offsetHeight;
       dots = [];
-      for (let x = GAP/2; x < W; x += GAP)
-        for (let y = GAP/2; y < H; y += GAP)
-          dots.push({ x, y, ox:x, oy:y, vx:0, vy:0 });
+      for (let x = GAP / 2; x < W; x += GAP)
+        for (let y = GAP / 2; y < H; y += GAP)
+          dots.push({ x, y, ox: x, oy: y, vx: 0, vy: 0 });
     };
     const onResize = () => build();
     const onMove = (e) => { mouse.x = e.clientX; mouse.y = e.clientY; };
@@ -322,17 +300,17 @@ const Hero = () => {
       ctx.clearRect(0, 0, W, H);
       dots.forEach((d) => {
         const dx = d.x - mouse.x, dy = d.y - mouse.y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
+        const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < INF) {
-          const f = (1 - dist/INF) * 26;
-          d.vx += (dx/dist)*f*0.08; d.vy += (dy/dist)*f*0.08;
+          const f = (1 - dist / INF) * 26;
+          d.vx += (dx / dist) * f * 0.08; d.vy += (dy / dist) * f * 0.08;
         }
-        d.vx += (d.ox - d.x)*0.04; d.vy += (d.oy - d.y)*0.04;
+        d.vx += (d.ox - d.x) * 0.04; d.vy += (d.oy - d.y) * 0.04;
         d.vx *= 0.82; d.vy *= 0.82;
         d.x += d.vx; d.y += d.vy;
-        const br = dist < INF ? 0.12 + (1-dist/INF)*0.26 : 0.12;
+        const br = dist < INF ? 0.04 + (1 - dist / INF) * 0.56 : 0.04;
         ctx.beginPath();
-        ctx.arc(d.x, d.y, R, 0, Math.PI*2);
+        ctx.arc(d.x, d.y, R, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(201,168,76,${br})`;
         ctx.fill();
       });
@@ -371,15 +349,15 @@ const Hero = () => {
       lines.forEach((el, i) => {
         if (!el) return;
         const rect = el.getBoundingClientRect();
-        const dx = (e.clientX - (rect.left + rect.width/2)) / window.innerWidth;
-        const dy = (e.clientY - (rect.top + rect.height/2)) / window.innerHeight;
-        gsap.to(el, { x: dx*(i===1?16:8), y: dy*(i===1?16:8), duration:0.9, ease:"power2.out" });
+        const dx = (e.clientX - (rect.left + rect.width / 2)) / window.innerWidth;
+        const dy = (e.clientY - (rect.top + rect.height / 2)) / window.innerHeight;
+        gsap.to(el, { x: dx * (i === 1 ? 16 : 8), y: dy * (i === 1 ? 16 : 8), duration: 0.9, ease: "power2.out" });
       });
     };
     const onLeave = () => {
       lines.forEach((el) => {
         if (!el) return;
-        gsap.to(el, { x:0, y:0, duration:1.2, ease:"elastic.out(1,0.4)" });
+        gsap.to(el, { x: 0, y: 0, duration: 1.2, ease: "elastic.out(1,0.4)" });
       });
     };
     window.addEventListener("mousemove", onMove);
@@ -394,9 +372,9 @@ const Hero = () => {
   /* ── Scroll parallax — starts at x:0 so load position is always aligned ── */
   useEffect(() => {
     [
-      { el: line1ParallaxRef.current, x:  30 },
+      { el: line1ParallaxRef.current, x: 30 },
       { el: line2ParallaxRef.current, x: -20 },
-      { el: line3ParallaxRef.current, x:  25 },
+      { el: line3ParallaxRef.current, x: 25 },
     ].forEach(({ el, x }) => {
       if (!el) return;
       gsap.fromTo(el,
@@ -432,12 +410,11 @@ const Hero = () => {
       return s;
     });
 
-    gsap.set(subRowRef.current,    { y: 28, opacity: 0 });
-    gsap.set(badgeRef.current,     { scale: 0.8, opacity: 0 });
+    gsap.set(subRowRef.current, { y: 28, opacity: 0 });
+    gsap.set(badgeRef.current, { scale: 0.8, opacity: 0 });
     gsap.set(nameLabelRef.current, { opacity: 0, y: 12 });
 
     tl
-      .to(topRightRef.current,  { opacity: 1, duration: 0.7 }, 0)
       .to(nameLabelRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.1)
 
       // ── Line 1: "I Build" — clean upward slide ──
@@ -467,10 +444,10 @@ const Hero = () => {
         ease: 'power3.out',
       }, 0.52)
 
-      .to(subRowRef.current,  { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.8)
-      .to(tagsRef.current,    { opacity: 1, y: 0, stagger: 0.07, duration: 0.5, ease: 'power3.out' }, 0.95)
-      .to(bottomRef.current,  { opacity: 1, duration: 0.5 }, 1.1)
-      .to(badgeRef.current,   { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.4)' }, 1.0)
+      .to(subRowRef.current, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.8)
+      .to(tagsRef.current, { opacity: 1, y: 0, stagger: 0.07, duration: 0.5, ease: 'power3.out' }, 0.95)
+      .to(bottomRef.current, { opacity: 1, duration: 0.5 }, 1.1)
+      .to(badgeRef.current, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.4)' }, 1.0)
 
       // Release line2 overflow so rotating word can scale freely
       .call(() => {
@@ -489,10 +466,7 @@ const Hero = () => {
       <GridCanvas ref={canvasRef} />
       <Vignette />
 
-      {/* Green dot only — top right */}
-      <TopRight ref={topRightRef}>
-        <span className="dot" />
-      </TopRight>
+
 
       {/* Circular badge */}
       <CircleBadge ref={badgeRef}>
@@ -553,7 +527,13 @@ const Hero = () => {
         <BottomItem>Mumbai, India · <span>2026</span></BottomItem>
         <BottomItem>Full Stack · AI / ML · Automation</BottomItem>
         <BottomItem><span>2+</span> Yrs Exp.</BottomItem>
-        <ScrollCue onClick={() => document.querySelector("#about")?.scrollIntoView({ behavior:"smooth" })}>
+        <ScrollCue onClick={() => {
+          if (locoScroll) {
+            locoScroll.scrollTo("#about");
+          } else {
+            document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" });
+          }
+        }}>
           <span className="arrow">↓</span>
           Scroll
         </ScrollCue>

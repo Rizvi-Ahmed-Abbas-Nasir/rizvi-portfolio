@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import SplitType from "split-type";
 import styled from "styled-components";
 import { FiGithub, FiLinkedin, FiMail, FiPhone } from "react-icons/fi";
+import { useContextProvider } from "../utils/GlobleContextProvider";
 
 const Container = styled.div`
   height: 70vh;
@@ -129,17 +130,22 @@ const Content = styled.div`
   }
 `;
 
-const handleAnchorClick = (e, href) => {
-  if (href.startsWith("#")) {
-    e.preventDefault();
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  }
-};
-
 const Footer = () => {
+  const { locoScroll } = useContextProvider();
   const containerRef = useRef(null);
   const textRef = useRef(null);
+
+  const handleAnchorClick = (e, href) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      if (locoScroll) {
+        locoScroll.scrollTo(href, { offset: -60 });
+      } else {
+        const el = document.querySelector(href);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
 
   useEffect(() => {
     const splitType = SplitType.create(textRef.current, { tagName: "span" });
