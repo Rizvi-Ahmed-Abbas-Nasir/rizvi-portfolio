@@ -196,7 +196,6 @@ const SlideCaption = styled.div`
   padding: 2rem 2rem 1.5rem;
   background: linear-gradient(to top, rgba(8,7,5,0.92) 0%, transparent 100%);
   z-index: 2;
-  animation: ${slideIn} 0.5s ease;
 `;
 
 const CaptionLabel = styled.span`
@@ -227,6 +226,9 @@ const SlideCounter = styled.div`
 const Dots = styled.div`
   display: flex;
   gap: 0.5rem;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Dot = styled.button`
@@ -389,12 +391,10 @@ const HackathonSection = () => {
             {ALL_SLIDES.map((s, i) => (
               <Slide key={i}>
                 <img src={s.img} alt={s.label} loading="lazy" />
-                {i === current && (
-                  <SlideCaption key={current}>
-                    <CaptionLabel>{s.label}</CaptionLabel>
-                    <CaptionTitle>{s.title}</CaptionTitle>
-                  </SlideCaption>
-                )}
+                <SlideCaption>
+                  <CaptionLabel>{s.label}</CaptionLabel>
+                  <CaptionTitle>{s.title}</CaptionTitle>
+                </SlideCaption>
               </Slide>
             ))}
           </SlideTrack>

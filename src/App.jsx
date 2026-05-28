@@ -31,6 +31,7 @@ function App() {
         smoothTouch: false,
         autoResize: true,
       },
+      scrollCallback: ScrollTrigger.update,
     });
 
     setLocoScroll(locomotiveScroll);
@@ -44,6 +45,7 @@ function App() {
 
     return () => {
       observer.disconnect();
+      locomotiveScroll.destroy();
     };
   }, []);
 
