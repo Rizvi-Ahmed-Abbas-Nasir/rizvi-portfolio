@@ -526,7 +526,7 @@ const Hero = () => {
       <BottomStrip ref={bottomRef}>
         <BottomItem>Mumbai, India · <span>2026</span></BottomItem>
         <BottomItem>Full Stack · AI / ML · Automation</BottomItem>
-        <BottomItem><span>2+</span> Yrs Exp.</BottomItem>
+        <BottomItem><span>3+</span> Yrs Exp.</BottomItem>
         <ScrollCue onClick={() => {
           if (locoScroll) {
             locoScroll.scrollTo("#about");

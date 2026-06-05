@@ -192,7 +192,7 @@ const AchievementItem = styled.div`
 `;
 
 const stats = [
-  { number: "2+", label: "Years Exp." },
+  { number: "3+", label: "Years Exp." },
   { number: "10+", label: "Projects" },
   { number: "4", label: "Hackathon Wins" },
 ];

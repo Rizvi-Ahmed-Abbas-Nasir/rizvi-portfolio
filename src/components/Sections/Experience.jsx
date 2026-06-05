@@ -172,7 +172,7 @@ const experiences = [
   {
     company: "CleverStudio",
     role: "MERN Stack Developer",
-    dateRange: "May 2023 — Dec 2025",
+    dateRange: "May 2024 — Dec 2025",
     location: "Mumbai · Hybrid",
     achievements: [
       "Delivered <strong>10+ client applications</strong> with scalable backends and optimised frontends.",
@@ -184,7 +184,7 @@ const experiences = [
   {
     company: "Perulima Motors",
     role: "Full Stack Developer",
-    dateRange: "May 2022 — Apr 2023",
+    dateRange: "May 2022 — Apr 2024",
     location: "Mumbai · Onsite",
     achievements: [
       "Built a <strong>React landing page</strong> with dynamic animations and a user-friendly interface.",
