@@ -845,7 +845,7 @@ const allProjects = [
   }
 ];
 
-const categories = ["All", "Full Stack Web", "AI & RAG", "Automation"];
+const categories = ["All", "Full Stack Web", "AI & RAG"];
 
 /* ─────────────────── ProjectCardItem (hover cross-fade) ─────────────────── */
 const ProjectCardItem = ({ project, cardRef, onOpenDetails }) => {
@@ -1079,9 +1079,18 @@ const PortfolioSection = () => {
     }
   };
 
+  const hiddenProjectNames = [
+    "Thinkbar — AI-Powered Agency",
+    "Azzirevents — Event Management",
+  ];
+
+  const visibleProjects = allProjects.filter(
+    (project) => !hiddenProjectNames.includes(project.name) && project.category !== "Automation"
+  );
+
   const filtered = activeCategory === "All"
-    ? allProjects
-    : allProjects.filter((p) => p.category === activeCategory);
+    ? visibleProjects
+    : visibleProjects.filter((p) => p.category === activeCategory);
 
   /* ── Bottom-to-top split-text animation ── */
   useEffect(() => {
