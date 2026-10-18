@@ -377,9 +377,9 @@ const IntroPanel = styled.div`
 `;
 
 const IntroCard = styled.div`
-  width: 86%;
-  margin-top: 24vh;
-  min-height: 62vh;
+  width: calc(100% + 4vw);
+  margin-top: 0;
+  min-height: 110vh;
   background: #f5ecd2;
   color: #3d2c10;
   border-radius: 0 56px 0 0;
@@ -415,7 +415,7 @@ const IntroTitle = styled.h3`
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 800;
-  font-size: min(8.2vw, 18vh);
+  font-size: min(9.6vw, 24vh);
   line-height: 0.85;
   letter-spacing: -0.03em;
   text-transform: uppercase;
