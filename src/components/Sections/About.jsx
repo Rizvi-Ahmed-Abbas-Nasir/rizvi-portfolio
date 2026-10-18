@@ -201,17 +201,7 @@ const FrameSlide = styled.div`
     height: 100%;
     object-fit: cover;
     display: block;
-    filter: sepia(0.15) contrast(1.08) brightness(0.88);
   }
-`;
-
-const FrameVeil = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  opacity: 0;
-  pointer-events: none;
-  background: linear-gradient(to top, rgba(92, 68, 28, 0.85) 0%, rgba(92, 68, 28, 0.35) 45%, rgba(4, 3, 2, 0.25) 100%);
 `;
 
 const FrameTopBar = styled.div`
@@ -643,8 +633,7 @@ const About = () => {
           .to(nameTopRef.current, { xPercent: -80, opacity: 0, ease: "power1.in", duration: 0.55 }, 0)
           .to(nameBottomRef.current, { xPercent: 80, opacity: 0, ease: "power1.in", duration: 0.55 }, 0)
           .to(tagRef.current, { opacity: 0, y: -20, ease: "none", duration: 0.3 }, 0)
-          .to(frame.querySelectorAll(".frame-ui"), { opacity: 0, ease: "none", duration: 0.35 }, 0.2)
-          .to(frame.querySelector(".frame-veil"), { opacity: 1, ease: "none", duration: 0.5 }, 0.5);
+          .to(frame.querySelectorAll(".frame-ui"), { opacity: 0, ease: "none", duration: 0.35 }, 0.2);
       });
 
       mq.add("(max-width: 860px)", () => {
@@ -705,8 +694,6 @@ const About = () => {
                   <img src={slide.img} alt={slide.label} loading="lazy" />
                 </FrameSlide>
               ))}
-
-              <FrameVeil className="frame-veil" />
 
               <FrameTopBar className="frame-ui">
                 <RecDot>Rec</RecDot>
