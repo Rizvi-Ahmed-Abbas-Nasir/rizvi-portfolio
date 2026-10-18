@@ -34,25 +34,29 @@ const PANELS = [
     event: "Technothon", year: "2023", medal: "🏆", prize: "State Level Project Winner",
     desc: "Built and demoed a winning project against top college teams at state level.",
     chips: ["2023", "State Level", "Project Winner"],
-    bg: "#0f4c45", fg: "#e6fff7", img: hack1,
+    bg: "linear-gradient(160deg, #1c1409 0%, #3a2a0f 100%)", solid: "#2a1f0c",
+    fg: "#f5ecd2", dim: "#b8963f", img: hack1,
   },
   {
     event: "Nextech Hackathon", year: "2024", medal: "🥇", prize: "1st Place Winner",
     desc: "Shipped a working prototype inside the sprint window and took first place.",
     chips: ["2024", "1st Place", "Rapid Prototype"],
-    bg: "#a84832", fg: "#fff1e6", img: hack2,
+    bg: "linear-gradient(160deg, #4a3512 0%, #7a5a1c 100%)", solid: "#4a3512",
+    fg: "#fbf3dc", dim: "#e0bf6a", img: hack2,
   },
   {
     event: "Oscillation Hackathon", year: "2025", medal: "🥇", prize: "1st Place Winner",
     desc: "Led the team to an end-to-end AI-powered build and a first place finish.",
     chips: ["2025", "1st Place", "AI / ML"],
-    bg: "#3a1f5c", fg: "#f3e8ff", img: hack3,
+    bg: "linear-gradient(160deg, #9a7625 0%, #c9a84c 100%)", solid: "#3a2a0a",
+    fg: "#1f1606", dim: "#fff3c9", img: hack3,
   },
   {
     event: "Smart India Hackathon", year: "2026", medal: "🏅", prize: "Top 3 Team — National",
     desc: "Represented the team at the national finals and finished in the top three.",
     chips: ["2026", "National", "Top 3"],
-    bg: "#c9a84c", fg: "#1a1405", img: hack4,
+    bg: "linear-gradient(160deg, #d9b95a 0%, #f2dd94 100%)", solid: "#f2dd94",
+    fg: "#1f1606", dim: "#7a5a14", img: hack4,
   },
 ];
 
@@ -120,10 +124,11 @@ const NameRow = styled.div`
 
 const nameBase = `
   font-family: var(--font-display);
-  font-size: min(15vw, 26vh);
-  font-weight: 900;
+  font-size: min(17vw, 29vh);
+  font-weight: 800;
+  font-style: italic;
   letter-spacing: -0.03em;
-  line-height: 0.85;
+  line-height: 0.8;
   text-transform: uppercase;
   white-space: nowrap;
   position: relative;
@@ -139,9 +144,10 @@ const NameTop = styled.h2`
 
 const NameBottom = styled.h2`
   ${nameBase}
-  font-style: italic;
-  color: var(--accent-gold);
-  align-self: flex-end;
+  color: #b8963f;
+  align-self: flex-start;
+  margin-left: 22%;
+  margin-top: -0.06em;
   @media (max-width: 860px) { align-self: center; font-size: clamp(3.5rem, 20vw, 6rem); }
 `;
 
@@ -149,8 +155,8 @@ const NameBottom = styled.h2`
 const FrameStage = styled.div`
   position: absolute;
   z-index: 1;
-  right: 15%;
-  top: 2%;
+  right: 14%;
+  top: -6%;
   width: clamp(240px, 28vw, 440px);
   aspect-ratio: 16 / 10;
   border: 1px solid rgba(201, 168, 76, 0.35);
@@ -398,7 +404,7 @@ const Panel = styled.div`
   color: ${({ $fg }) => $fg};
   overflow: hidden;
   z-index: ${({ $i }) => $i + 1};
-  clip-path: ${({ $i }) => ($i === 0 ? 'none' : 'polygon(0 clamp(40px, 8vw, 120px), 100% 0, 100% 100%, 0 100%)')};
+  clip-path: ${({ $i }) => ($i === 0 ? 'none' : 'polygon(0 clamp(24px, 3.5vw, 56px), 100% 0, 100% 100%, 0 100%)')};
 
   @media (max-width: 860px) {
     height: auto;
@@ -412,7 +418,7 @@ const PanelInner = styled.div`
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 8rem var(--container-padding) 4rem;
+  padding: 5rem var(--container-padding) 2rem;
   display: grid;
   grid-template-columns: 1.3fr 1fr;
   gap: 3rem;
@@ -437,13 +443,15 @@ const PanelIndex = styled.div`
 const PanelTitle = styled.h3`
   font-family: var(--font-display);
   font-size: clamp(2.6rem, 7.5vw, 7rem);
-  font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   text-transform: uppercase;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
+  font-style: italic;
+  font-weight: 800;
+  line-height: 0.88;
 
-  em { font-style: italic; display: block; }
+  em { display: block; color: ${({ $dim }) => $dim}; }
 `;
 
 const Chips = styled.div`
@@ -461,7 +469,7 @@ const Chip = styled.span`
   padding: 0.45rem 1rem;
   border-radius: 999px;
   background: ${({ $fg }) => $fg};
-  color: ${({ $bg }) => $bg};
+  color: ${({ $solid }) => $solid};
   transform: rotate(${({ $r }) => $r}deg);
 `;
 
@@ -571,14 +579,14 @@ const About = () => {
       innerRefs.current.forEach((inner, i) => {
         if (!inner) return;
         gsap.from(inner, {
-          y: 80, opacity: 0, ease: "none",
-          scrollTrigger: { trigger: panelRefs.current[i], start: "top 90%", end: "top 30%", scrub: true },
+          y: 60, opacity: 0, ease: "none",
+          scrollTrigger: { trigger: panelRefs.current[i], start: "top 95%", end: "top 40%", scrub: 0.6 },
         });
         const next = panelRefs.current[i + 1];
         if (next) {
           gsap.to(inner, {
-            scale: 0.9, opacity: 0.35, ease: "none",
-            scrollTrigger: { trigger: next, start: "top bottom", end: "top top", scrub: true },
+            scale: 0.94, filter: "brightness(0.55)", ease: "none",
+            scrollTrigger: { trigger: next, start: "top bottom", end: "top top", scrub: 0.6 },
           });
         }
       });
@@ -649,13 +657,13 @@ const About = () => {
             <PanelInner ref={(el) => (innerRefs.current[i] = el)}>
               <div>
                 <PanelIndex>0{i + 1} / 0{PANELS.length} — Achievement</PanelIndex>
-                <PanelTitle>
+                <PanelTitle $dim={p.dim}>
                   {p.event.split(" ")[0]}
                   <em>{p.event.split(" ").slice(1).join(" ") || p.year}</em>
                 </PanelTitle>
                 <Chips>
                   {p.chips.map((c, ci) => (
-                    <Chip key={c} $bg={p.bg} $fg={p.fg} $r={ci % 2 ? 2 : -2}>{c}</Chip>
+                    <Chip key={c} $solid={p.solid} $fg={p.fg} $r={ci % 2 ? 2 : -2}>{c}</Chip>
                   ))}
                 </Chips>
                 <PanelPrize>{p.medal} {p.prize}</PanelPrize>
