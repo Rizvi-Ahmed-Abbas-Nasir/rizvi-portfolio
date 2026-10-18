@@ -29,11 +29,31 @@ const stats = [
   { number: "4", label: "Hackathon Wins" },
 ];
 
-const achievements = [
-  "Smart India Hackathon (SIH) 2026 — Top 3 Team (National)",
-  "Oscillation Hackathon 2025 — 1st Place Winner",
-  "Nextech Hackathon 2024 — 1st Place Winner",
-  "Technothon 2023 — State Level Project Winner",
+const PANELS = [
+  {
+    event: "Technothon", year: "2023", medal: "🏆", prize: "State Level Project Winner",
+    desc: "Built and demoed a winning project against top college teams at state level.",
+    chips: ["2023", "State Level", "Project Winner"],
+    bg: "#0f4c45", fg: "#e6fff7", img: hack1,
+  },
+  {
+    event: "Nextech Hackathon", year: "2024", medal: "🥇", prize: "1st Place Winner",
+    desc: "Shipped a working prototype inside the sprint window and took first place.",
+    chips: ["2024", "1st Place", "Rapid Prototype"],
+    bg: "#a84832", fg: "#fff1e6", img: hack2,
+  },
+  {
+    event: "Oscillation Hackathon", year: "2025", medal: "🥇", prize: "1st Place Winner",
+    desc: "Led the team to an end-to-end AI-powered build and a first place finish.",
+    chips: ["2025", "1st Place", "AI / ML"],
+    bg: "#3a1f5c", fg: "#f3e8ff", img: hack3,
+  },
+  {
+    event: "Smart India Hackathon", year: "2026", medal: "🏅", prize: "Top 3 Team — National",
+    desc: "Represented the team at the national finals and finished in the top three.",
+    chips: ["2026", "National", "Top 3"],
+    bg: "#c9a84c", fg: "#1a1405", img: hack4,
+  },
 ];
 
 const pills = ["React.js", "Django", "AI / ML", "AWS", "Automation", "Hackathon Winner"];
@@ -87,74 +107,63 @@ const Eyebrow = styled.div`
 
 const NameRow = styled.div`
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
-  max-width: 1300px;
+  max-width: 1500px;
+  display: flex;
+  flex-direction: column;
 
   @media (max-width: 860px) {
-    flex-direction: column;
-    gap: 2rem;
+    align-items: center;
+    gap: 1.5rem;
   }
 `;
 
-const NameOutlined = styled.h2`
+const nameBase = `
   font-family: var(--font-display);
-  font-size: clamp(2.8rem, 8.5vw, 7.5rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 0.95;
-  color: transparent;
-  -webkit-text-stroke: 1.5px rgba(245, 240, 232, 0.4);
+  font-size: min(15vw, 26vh);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 0.85;
   text-transform: uppercase;
   white-space: nowrap;
-  position: relative;
-  z-index: 1;
-  margin-right: -2.5rem;
-
-  @media (max-width: 860px) {
-    margin-right: 0;
-    -webkit-text-stroke: 1.2px rgba(245, 240, 232, 0.5);
-  }
-`;
-
-const NameFilled = styled.h2`
-  font-family: var(--font-display);
-  font-size: clamp(2.8rem, 8.5vw, 7.5rem);
-  font-weight: 800;
-  font-style: italic;
-  letter-spacing: -0.02em;
-  line-height: 0.95;
-  background: var(--accent-gradient-text);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-transform: uppercase;
-  white-space: nowrap;
-  position: relative;
-  z-index: 1;
-  margin-left: -2.5rem;
-
-  @media (max-width: 860px) {
-    margin-left: 0;
-  }
-`;
-
-/* The "video" frame — scales up as the page scrolls */
-const FrameStage = styled.div`
   position: relative;
   z-index: 3;
-  flex-shrink: 0;
-  width: clamp(230px, 28vw, 380px);
+`;
+
+const NameTop = styled.h2`
+  ${nameBase}
+  color: var(--text-primary);
+  align-self: flex-start;
+  @media (max-width: 860px) { align-self: center; font-size: clamp(3.5rem, 20vw, 6rem); }
+`;
+
+const NameBottom = styled.h2`
+  ${nameBase}
+  font-style: italic;
+  color: var(--accent-gold);
+  align-self: flex-end;
+  @media (max-width: 860px) { align-self: center; font-size: clamp(3.5rem, 20vw, 6rem); }
+`;
+
+/* The "video" frame sits BEHIND the letters and scales up on scroll */
+const FrameStage = styled.div`
+  position: absolute;
+  z-index: 1;
+  right: 15%;
+  top: 2%;
+  width: clamp(240px, 28vw, 440px);
   aspect-ratio: 16 / 10;
   border: 1px solid rgba(201, 168, 76, 0.35);
-  box-shadow: var(--accent-glow), 0 20px 60px rgba(0, 0, 0, 0.5);
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   will-change: transform;
   transform-origin: center center;
 
   @media (max-width: 860px) {
+    position: relative;
+    right: auto;
+    top: auto;
     width: min(90vw, 420px);
   }
 `;
@@ -278,7 +287,7 @@ const AchievementsSection = styled.div`
   position: relative;
   z-index: 2;
   background: var(--bg-primary);
-  padding: 0 var(--container-padding) var(--section-padding);
+  padding: var(--section-padding) var(--container-padding);
 `;
 
 const AchievementsInner = styled.div`
@@ -309,8 +318,9 @@ const Pill = styled.span`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 4rem;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 760px;
   align-items: start;
 
   @media (max-width: 900px) {
@@ -372,43 +382,115 @@ const StatCard = styled.div`
   }
 `;
 
-const AchievementsBox = styled.div`
-  border: 1px solid var(--border-glass);
-  border-left: 2px solid var(--accent-gold);
-  background: var(--bg-card);
-  padding: 1.5rem;
-  opacity: 0;
-  transform: translateY(20px);
+/* ── Colourful diagonal panels that stack over each other ── */
+const Stack = styled.div`
+  position: relative;
+  z-index: 2;
 `;
 
-const AchievementsTitle = styled.h4`
+const Panel = styled.div`
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  background: ${({ $bg }) => $bg};
+  color: ${({ $fg }) => $fg};
+  overflow: hidden;
+  z-index: ${({ $i }) => $i + 1};
+  clip-path: ${({ $i }) => ($i === 0 ? 'none' : 'polygon(0 clamp(40px, 8vw, 120px), 100% 0, 100% 100%, 0 100%)')};
+
+  @media (max-width: 860px) {
+    height: auto;
+    min-height: 100vh;
+    position: relative;
+    clip-path: none;
+  }
+`;
+
+const PanelInner = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 8rem var(--container-padding) 4rem;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  will-change: transform;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+    padding-top: 5rem;
+  }
+`;
+
+const PanelIndex = styled.div`
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 3px;
+  font-size: 0.75rem;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--accent-gold);
+  opacity: 0.7;
   margin-bottom: 1rem;
 `;
 
-const AchievementItem = styled.div`
+const PanelTitle = styled.h3`
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 7.5vw, 7rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+
+  em { font-style: italic; display: block; }
+`;
+
+const Chips = styled.div`
   display: flex;
-  align-items: flex-start;
-  gap: 0.7rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+`;
+
+const Chip = styled.span`
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  background: ${({ $fg }) => $fg};
+  color: ${({ $bg }) => $bg};
+  transform: rotate(${({ $r }) => $r}deg);
+`;
+
+const PanelDesc = styled.p`
   font-family: var(--font-body);
-  font-size: 0.88rem;
+  font-size: clamp(1rem, 1.6vw, 1.35rem);
   line-height: 1.6;
-  color: var(--text-secondary);
-  margin-bottom: 0.65rem;
+  max-width: 520px;
+`;
 
-  &:last-child { margin-bottom: 0; }
+const PanelPrize = styled.div`
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.2vw, 1.9rem);
+  font-weight: 700;
+  font-style: italic;
+  margin-bottom: 1rem;
+`;
 
-  &::before {
-    content: '◈';
-    color: var(--accent-gold);
-    font-size: 0.65rem;
-    margin-top: 0.2rem;
-    flex-shrink: 0;
-  }
+const PanelPhoto = styled.div`
+  justify-self: center;
+  width: min(100%, 440px);
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  overflow: hidden;
+  transform: rotate(4deg);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+  border: 4px solid ${({ $fg }) => $fg};
+
+  img { width: 100%; height: 100%; object-fit: cover; display: block; }
 `;
 
 /* ═══════════════════════════════════════════════════
@@ -416,19 +498,21 @@ const AchievementItem = styled.div`
    ═══════════════════════════════════════════════════ */
 const About = () => {
   const trackRef = useRef(null);
-  const nameLeftRef = useRef(null);
-  const nameRightRef = useRef(null);
+  const nameTopRef = useRef(null);
+  const nameBottomRef = useRef(null);
+  const blockRef = useRef(null);
   const frameRef = useRef(null);
   const tagRef = useRef(null);
+  const stackRef = useRef(null);
+  const panelRefs = useRef([]);
+  const innerRefs = useRef([]);
   const pillsRef = useRef([]);
   const bioRef = useRef(null);
   const statsRef = useRef([]);
-  const achieveRef = useRef(null);
 
   const [active, setActive] = useState(0);
   const [elapsed, setElapsed] = useState(0);
 
-  /* ── Cycle the reel like a playing clip ── */
   useEffect(() => {
     const id = setInterval(() => {
       setActive((c) => (c + 1) % REEL.length);
@@ -439,13 +523,15 @@ const About = () => {
 
   const mm = elapsed % 60 < 10 ? `0${elapsed % 60}` : `${elapsed % 60}`;
 
-  /* ── Scroll-scrub: reel grows, name peels apart ── */
+  /* Scroll-scrub: frame moves to centre and fills the screen, letters slide away */
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const mmGsap = gsap.matchMedia();
+      const mq = gsap.matchMedia();
 
-      mmGsap.add("(min-width: 861px)", () => {
-        gsap.set(frameRef.current, { scale: 1, rotate: -5 });
+      mq.add("(min-width: 861px)", () => {
+        const frame = frameRef.current;
+        const block = blockRef.current;
+        gsap.set(frame, { rotate: -7 });
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -453,26 +539,53 @@ const About = () => {
             start: "top top",
             end: "bottom bottom",
             scrub: 0.8,
+            invalidateOnRefresh: true,
           },
         });
 
-        tl.to(frameRef.current, { scale: 2.7, rotate: 0, ease: "none" }, 0)
-          .to(nameLeftRef.current, { xPercent: -60, opacity: 0, ease: "none" }, 0)
-          .to(nameRightRef.current, { xPercent: 60, opacity: 0, ease: "none" }, 0)
-          .to(tagRef.current, { opacity: 0, y: -20, ease: "none" }, 0);
-
-        return () => tl.kill();
+        tl.to(frame, {
+          rotate: 0,
+          borderRadius: 0,
+          x: () => block.offsetWidth / 2 - (frame.offsetLeft + frame.offsetWidth / 2),
+          y: () => block.offsetHeight / 2 - (frame.offsetTop + frame.offsetHeight / 2),
+          scale: () => Math.max(window.innerWidth / frame.offsetWidth, window.innerHeight / frame.offsetHeight) * 1.02,
+          ease: "power1.inOut",
+          duration: 1,
+        }, 0)
+          .to(nameTopRef.current, { xPercent: -80, opacity: 0, ease: "power1.in", duration: 0.55 }, 0)
+          .to(nameBottomRef.current, { xPercent: 80, opacity: 0, ease: "power1.in", duration: 0.55 }, 0)
+          .to(tagRef.current, { opacity: 0, y: -20, ease: "none", duration: 0.3 }, 0);
       });
 
-      mmGsap.add("(max-width: 860px)", () => {
-        gsap.set(frameRef.current, { scale: 1, rotate: -3 });
+      mq.add("(max-width: 860px)", () => {
+        gsap.set(frameRef.current, { rotate: -3 });
       });
     }, trackRef);
 
     return () => ctx.revert();
   }, []);
 
-  /* ── Achievements reveal ── */
+  /* Panels: content rises in, previous panel recedes as the next slides over */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      innerRefs.current.forEach((inner, i) => {
+        if (!inner) return;
+        gsap.from(inner, {
+          y: 80, opacity: 0, ease: "none",
+          scrollTrigger: { trigger: panelRefs.current[i], start: "top 90%", end: "top 30%", scrub: true },
+        });
+        const next = panelRefs.current[i + 1];
+        if (next) {
+          gsap.to(inner, {
+            scale: 0.9, opacity: 0.35, ease: "none",
+            scrollTrigger: { trigger: next, start: "top bottom", end: "top top", scrub: true },
+          });
+        }
+      });
+    }, stackRef);
+    return () => ctx.revert();
+  }, []);
+
   useEffect(() => {
     gsap.to(pillsRef.current, {
       opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: "power3.out",
@@ -492,11 +605,6 @@ const About = () => {
         scrollTrigger: { trigger: el, start: "top 92%", toggleActions: "play none none reverse" },
       });
     });
-
-    gsap.to(achieveRef.current, {
-      opacity: 1, y: 0, duration: 0.7, ease: "power3.out",
-      scrollTrigger: { trigger: achieveRef.current, start: "top 88%", toggleActions: "play none none reverse" },
-    });
   }, []);
 
   return (
@@ -505,15 +613,10 @@ const About = () => {
         <Sticky>
           <Eyebrow>✦ The Builder Behind The Code</Eyebrow>
 
-          <NameRow>
-            <NameOutlined ref={nameLeftRef}>Rizvi</NameOutlined>
+          <NameRow ref={blockRef}>
+            <NameTop ref={nameTopRef}>Rizvi</NameTop>
 
             <FrameStage ref={frameRef}>
-              <FrameOrnament className="tl" />
-              <FrameOrnament className="tr" />
-              <FrameOrnament className="bl" />
-              <FrameOrnament className="br" />
-
               {REEL.map((slide, i) => (
                 <FrameSlide key={i} $active={i === active}>
                   <img src={slide.img} alt={slide.label} loading="lazy" />
@@ -531,7 +634,7 @@ const About = () => {
               </FrameBottomBar>
             </FrameStage>
 
-            <NameFilled ref={nameRightRef}>Abbas</NameFilled>
+            <NameBottom ref={nameBottomRef}>Abbas</NameBottom>
           </NameRow>
 
           <TagLine ref={tagRef}>
@@ -539,6 +642,32 @@ const About = () => {
           </TagLine>
         </Sticky>
       </ShowcaseTrack>
+
+      <Stack ref={stackRef}>
+        {PANELS.map((p, i) => (
+          <Panel key={p.event} $i={i} $bg={p.bg} $fg={p.fg} ref={(el) => (panelRefs.current[i] = el)}>
+            <PanelInner ref={(el) => (innerRefs.current[i] = el)}>
+              <div>
+                <PanelIndex>0{i + 1} / 0{PANELS.length} — Achievement</PanelIndex>
+                <PanelTitle>
+                  {p.event.split(" ")[0]}
+                  <em>{p.event.split(" ").slice(1).join(" ") || p.year}</em>
+                </PanelTitle>
+                <Chips>
+                  {p.chips.map((c, ci) => (
+                    <Chip key={c} $bg={p.bg} $fg={p.fg} $r={ci % 2 ? 2 : -2}>{c}</Chip>
+                  ))}
+                </Chips>
+                <PanelPrize>{p.medal} {p.prize}</PanelPrize>
+                <PanelDesc>{p.desc}</PanelDesc>
+              </div>
+              <PanelPhoto $fg={p.fg}>
+                <img src={p.img} alt={p.event} loading="lazy" />
+              </PanelPhoto>
+            </PanelInner>
+          </Panel>
+        ))}
+      </Stack>
 
       <AchievementsSection>
         <AchievementsInner>
@@ -549,30 +678,21 @@ const About = () => {
           </PillsRow>
 
           <Grid>
-            <div>
-              <Bio ref={bioRef}>
-                I'm Rizvi Ahmed Abbas, a passionate software engineer with a solid background
-                in AI/ML, automation, and a proven track record of winning hackathons. With
-                expertise in Django frameworks, cloud platforms (AWS EC2, S3), and database
-                management, I enjoy building scalable applications that drive user satisfaction
-                and measurable results.
-              </Bio>
-              <StatsGrid>
-                {stats.map((stat, index) => (
-                  <StatCard key={stat.label} ref={(el) => (statsRef.current[index] = el)}>
-                    <div className="number">{stat.number}</div>
-                    <div className="label">{stat.label}</div>
-                  </StatCard>
-                ))}
-              </StatsGrid>
-            </div>
-
-            <AchievementsBox ref={achieveRef}>
-              <AchievementsTitle>✦ Key Achievements</AchievementsTitle>
-              {achievements.map((ach, i) => (
-                <AchievementItem key={i}>{ach}</AchievementItem>
+            <Bio ref={bioRef}>
+              I'm Rizvi Ahmed Abbas, a passionate software engineer with a solid background
+              in AI/ML, automation, and a proven track record of winning hackathons. With
+              expertise in Django frameworks, cloud platforms (AWS EC2, S3), and database
+              management, I enjoy building scalable applications that drive user satisfaction
+              and measurable results.
+            </Bio>
+            <StatsGrid>
+              {stats.map((stat, index) => (
+                <StatCard key={stat.label} ref={(el) => (statsRef.current[index] = el)}>
+                  <div className="number">{stat.number}</div>
+                  <div className="label">{stat.label}</div>
+                </StatCard>
               ))}
-            </AchievementsBox>
+            </StatsGrid>
           </Grid>
         </AchievementsInner>
       </AchievementsSection>
