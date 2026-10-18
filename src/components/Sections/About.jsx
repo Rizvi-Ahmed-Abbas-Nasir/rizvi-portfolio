@@ -366,63 +366,6 @@ const Stack = styled.div`
   }
 `;
 
-const IntroPanel = styled.div`
-  position: sticky;
-  top: 0;
-  height: 80vh;
-  z-index: 1;
-  display: flex;
-  align-items: flex-start;
-  @media (max-width: 860px) { position: relative; height: auto; }
-`;
-
-const IntroCard = styled.div`
-  width: calc(100% + 4vw);
-  margin-top: 0;
-  min-height: 100vh;
-  background: #f5ecd2;
-  color: #3d2c10;
-  border-radius: 0 56px 0 0;
-  padding: 2.5rem clamp(1rem, 4vw, 3rem) calc(2.5rem + 20vh);
-  display: flex;
-  align-items: center;
-  gap: clamp(1rem, 4vw, 4rem);
-  transform: rotate(-0.8deg);
-  transform-origin: 0 100%;
-
-  @media (max-width: 860px) {
-    width: 100%;
-    margin-top: 0;
-    min-height: 0;
-    transform: none;
-    flex-direction: column;
-    align-items: flex-start;
-    border-radius: 0 32px 0 0;
-  }
-`;
-
-const IntroLabel = styled.div`
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  line-height: 1.5;
-  flex-shrink: 0;
-  max-width: 140px;
-`;
-
-const IntroTitle = styled.h3`
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 800;
-  font-size: min(9.6vw, 24vh);
-  line-height: 0.85;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-  color: #3d2c10;
-  @media (max-width: 860px) { font-size: 12vw; }
-`;
-
 const Panel = styled.div`
   position: sticky;
   top: 0;
@@ -707,13 +650,6 @@ const About = () => {
       </ShowcaseTrack>
 
       <Stack ref={stackRef}>
-        <IntroPanel>
-          <IntroCard>
-            <IntroLabel>What I've<br />Won</IntroLabel>
-            <IntroTitle>Achievements</IntroTitle>
-          </IntroCard>
-        </IntroPanel>
-
         {PANELS.map((p, i) => (
           <Panel key={p.event} $i={i}>
             <Card $bg={p.bg} $fg={p.fg} $flip={i % 2 === 1}>
