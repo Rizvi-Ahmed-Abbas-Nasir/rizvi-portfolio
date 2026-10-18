@@ -34,28 +34,28 @@ const PANELS = [
     event: "Technothon", year: "2023", medal: "🏆", prize: "State Level Project Winner",
     desc: "Built and demoed a winning project against top college teams at state level.",
     chips: ["2023", "State Level", "Project Winner"],
-    bg: "linear-gradient(160deg, rgba(92,68,28,0.72) 0%, rgba(122,90,28,0.62) 100%)", solid: "#3d2c10",
+    bg: "linear-gradient(160deg, rgba(92,68,28,0.94) 0%, rgba(122,90,28,0.9) 100%)", solid: "#3d2c10",
     fg: "#fff6dc", dim: "#f0d98a", img: hack1,
   },
   {
     event: "Nextech Hackathon", year: "2024", medal: "🥇", prize: "1st Place Winner",
     desc: "Shipped a working prototype inside the sprint window and took first place.",
     chips: ["2024", "1st Place", "Rapid Prototype"],
-    bg: "linear-gradient(160deg, rgba(140,104,34,0.72) 0%, rgba(176,134,46,0.62) 100%)", solid: "#4a3512",
+    bg: "linear-gradient(160deg, rgba(140,104,34,0.94) 0%, rgba(176,134,46,0.9) 100%)", solid: "#4a3512",
     fg: "#fbf3dc", dim: "#ffe9a8", img: hack2,
   },
   {
     event: "Oscillation Hackathon", year: "2025", medal: "🥇", prize: "1st Place Winner",
     desc: "Led the team to an end-to-end AI-powered build and a first place finish.",
     chips: ["2025", "1st Place", "AI / ML"],
-    bg: "linear-gradient(160deg, rgba(201,168,76,0.78) 0%, rgba(224,192,106,0.7) 100%)", solid: "#3a2a0a",
+    bg: "linear-gradient(160deg, rgba(201,168,76,0.95) 0%, rgba(224,192,106,0.92) 100%)", solid: "#3a2a0a",
     fg: "#1f1606", dim: "#fff3c9", img: hack3,
   },
   {
     event: "Smart India Hackathon", year: "2026", medal: "🏅", prize: "Top 3 Team — National",
     desc: "Represented the team at the national finals and finished in the top three.",
     chips: ["2026", "National", "Top 3"],
-    bg: "linear-gradient(160deg, rgba(240,217,138,0.82) 0%, rgba(248,236,192,0.76) 100%)", solid: "#f2dd94",
+    bg: "linear-gradient(160deg, rgba(240,217,138,0.96) 0%, rgba(248,236,192,0.94) 100%)", solid: "#f2dd94",
     fg: "#1f1606", dim: "#7a5a14", img: hack4,
   },
 ];
@@ -401,78 +401,142 @@ const StatCard = styled.div`
 const Stack = styled.div`
   position: relative;
   z-index: 2;
+  overflow-x: clip;
   @media (min-width: 861px) {
     margin-top: -100vh;
   }
+`;
+
+const IntroPanel = styled.div`
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  @media (max-width: 860px) { position: relative; height: auto; }
+`;
+
+const IntroCard = styled.div`
+  width: 86%;
+  margin-top: 24vh;
+  min-height: 62vh;
+  background: rgba(245, 236, 210, 0.95);
+  color: #3d2c10;
+  border-radius: 0 56px 0 0;
+  padding: 2.5rem clamp(1rem, 4vw, 3rem);
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 4vw, 4rem);
+  transform: rotate(-0.8deg);
+  transform-origin: 0 100%;
+
+  @media (max-width: 860px) {
+    width: 100%;
+    margin-top: 0;
+    min-height: 0;
+    transform: none;
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 0 32px 0 0;
+  }
+`;
+
+const IntroLabel = styled.div`
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  line-height: 1.5;
+  flex-shrink: 0;
+  max-width: 140px;
+`;
+
+const IntroTitle = styled.h3`
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: min(10vw, 20vh);
+  line-height: 0.85;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #3d2c10;
+  @media (max-width: 860px) { font-size: 12vw; }
 `;
 
 const Panel = styled.div`
   position: sticky;
   top: 0;
   height: 100vh;
-  display: flex;
-  align-items: center;
-  background: ${({ $bg }) => $bg};
-  color: ${({ $fg }) => $fg};
-  overflow: hidden;
-  backdrop-filter: blur(22px) saturate(1.2);
-  -webkit-backdrop-filter: blur(22px) saturate(1.2);
-  z-index: ${({ $i }) => $i + 1};
-  clip-path: ${({ $i }) => 'polygon(0 clamp(24px, 3.5vw, 56px), 100% 0, 100% 100%, 0 100%)'};
+  z-index: ${({ $i }) => $i + 2};
 
   @media (max-width: 860px) {
-    height: auto;
-    min-height: 100vh;
     position: relative;
-    clip-path: none;
+    height: auto;
+  }
+`;
+
+const Card = styled.div`
+  position: relative;
+  min-height: 114vh;
+  margin-left: clamp(0.5rem, 3.5vw, 3.5rem);
+  margin-right: -6vw;
+  background: ${({ $bg }) => $bg};
+  color: ${({ $fg }) => $fg};
+  border-radius: 56px 0 0 0;
+  transform: rotate(-1.4deg);
+  transform-origin: 0 0;
+  overflow: hidden;
+
+  @media (max-width: 860px) {
+    min-height: 0;
+    margin-right: 0;
+    transform: none;
+    border-radius: 32px 0 0 0;
   }
 `;
 
 const PanelInner = styled.div`
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 5rem var(--container-padding) 2rem;
+  padding: clamp(2.5rem, 7vh, 5rem) clamp(1.5rem, 4vw, 4rem) 2rem;
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 3rem;
-  align-items: center;
+  grid-template-columns: 1fr 1.1fr;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
   will-change: transform;
 
   @media (max-width: 860px) {
     grid-template-columns: 1fr;
-    padding-top: 5rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
-`;
-
-const PanelIndex = styled.div`
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  opacity: 0.7;
-  margin-bottom: 1rem;
 `;
 
 const PanelTitle = styled.h3`
   font-family: var(--font-display);
-  font-size: clamp(2.6rem, 7.5vw, 7rem);
+  font-size: clamp(2.4rem, 6.2vw, 6rem);
   font-weight: 800;
+  font-style: italic;
+  line-height: 0.9;
   letter-spacing: -0.03em;
   text-transform: uppercase;
-  margin-bottom: 1.2rem;
-  font-style: italic;
-  font-weight: 800;
-  line-height: 0.88;
 
   em { display: block; color: ${({ $dim }) => $dim}; }
+`;
+
+const PanelIndex = styled.div`
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-bottom: 1rem;
 `;
 
 const Chips = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  gap: 0.4rem;
+  margin-bottom: 2rem;
 `;
 
 const Chip = styled.span`
@@ -480,36 +544,36 @@ const Chip = styled.span`
   font-size: 0.68rem;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  padding: 0.45rem 1rem;
+  padding: 0.5rem 1.1rem;
   border-radius: 999px;
   background: ${({ $fg }) => $fg};
   color: ${({ $solid }) => $solid};
-  transform: rotate(${({ $r }) => $r}deg);
-`;
-
-const PanelDesc = styled.p`
-  font-family: var(--font-body);
-  font-size: clamp(1rem, 1.6vw, 1.35rem);
-  line-height: 1.6;
-  max-width: 520px;
 `;
 
 const PanelPrize = styled.div`
   font-family: var(--font-display);
-  font-size: clamp(1.2rem, 2.2vw, 1.9rem);
+  font-size: clamp(1.7rem, 3.4vw, 3.2rem);
   font-weight: 700;
   font-style: italic;
-  margin-bottom: 1rem;
+  line-height: 1.12;
+  margin-bottom: 1.6rem;
+`;
+
+const PanelDesc = styled.p`
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.3vw, 1.2rem);
+  line-height: 1.6;
+  max-width: 480px;
 `;
 
 const PanelPhoto = styled.div`
-  justify-self: center;
-  width: min(100%, 440px);
+  margin-top: 2rem;
+  width: min(100%, 360px);
   aspect-ratio: 4 / 3;
-  border-radius: 18px;
+  border-radius: 16px;
   overflow: hidden;
-  transform: rotate(4deg);
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+  transform: rotate(3deg);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
   border: 4px solid ${({ $fg }) => $fg};
 
   img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -663,27 +727,38 @@ const About = () => {
       </ShowcaseTrack>
 
       <Stack ref={stackRef}>
+        <IntroPanel>
+          <IntroCard>
+            <IntroLabel>What I've<br />Won</IntroLabel>
+            <IntroTitle>Achievements</IntroTitle>
+          </IntroCard>
+        </IntroPanel>
+
         {PANELS.map((p, i) => (
-          <Panel key={p.event} $i={i} $bg={p.bg} $fg={p.fg} ref={(el) => (panelRefs.current[i] = el)}>
-            <PanelInner ref={(el) => (innerRefs.current[i] = el)}>
-              <div>
-                <PanelIndex>0{i + 1} / 0{PANELS.length} — Achievement</PanelIndex>
-                <PanelTitle $dim={p.dim}>
-                  {p.event.split(" ")[0]}
-                  <em>{p.event.split(" ").slice(1).join(" ") || p.year}</em>
-                </PanelTitle>
-                <Chips>
-                  {p.chips.map((c, ci) => (
-                    <Chip key={c} $solid={p.solid} $fg={p.fg} $r={ci % 2 ? 2 : -2}>{c}</Chip>
-                  ))}
-                </Chips>
-                <PanelPrize>{p.medal} {p.prize}</PanelPrize>
-                <PanelDesc>{p.desc}</PanelDesc>
-              </div>
-              <PanelPhoto $fg={p.fg}>
-                <img src={p.img} alt={p.event} loading="lazy" />
-              </PanelPhoto>
-            </PanelInner>
+          <Panel key={p.event} $i={i} ref={(el) => (panelRefs.current[i] = el)}>
+            <Card $bg={p.bg} $fg={p.fg}>
+              <PanelInner ref={(el) => (innerRefs.current[i] = el)}>
+                <div>
+                  <PanelIndex>0{i + 1} / 0{PANELS.length}</PanelIndex>
+                  <PanelTitle $dim={p.dim}>
+                    {p.event.split(" ")[0]}
+                    <em>{p.event.split(" ").slice(1).join(" ") || p.year}</em>
+                  </PanelTitle>
+                  <PanelPhoto $fg={p.fg}>
+                    <img src={p.img} alt={p.event} loading="lazy" />
+                  </PanelPhoto>
+                </div>
+                <div>
+                  <Chips>
+                    {p.chips.map((c) => (
+                      <Chip key={c} $solid={p.solid} $fg={p.fg}>{c}</Chip>
+                    ))}
+                  </Chips>
+                  <PanelPrize>{p.medal} {p.prize}</PanelPrize>
+                  <PanelDesc>{p.desc}</PanelDesc>
+                </div>
+              </PanelInner>
+            </Card>
           </Panel>
         ))}
       </Stack>
