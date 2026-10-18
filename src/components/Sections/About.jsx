@@ -287,6 +287,52 @@ const TagLine = styled.p`
   }
 `;
 
+/* ── Closing "My Work" section: words slide in from opposite edges ── */
+const WorkSection = styled.div`
+  position: relative;
+  z-index: 3;
+  background: #f5ecd2;
+  color: #3d2c10;
+  overflow: hidden;
+  padding: clamp(5rem, 14vh, 10rem) 0 clamp(4rem, 12vh, 8rem);
+  text-align: center;
+`;
+
+const WorkTitle = styled.h3`
+  display: flex;
+  justify-content: center;
+  gap: 0.18em;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: min(21vw, 34vh);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+
+  span { display: inline-block; will-change: transform; }
+  span:last-child { color: #a67c2a; }
+`;
+
+const WorkSub = styled.p`
+  margin: clamp(1.5rem, 4vh, 3rem) auto 0;
+  max-width: 760px;
+  padding: 0 var(--container-padding);
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3.2vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+`;
+
+const WorkMark = styled.div`
+  margin-top: 2rem;
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  color: #a67c2a;
+`;
+
 /* ── Achievements, revealed once the reel has grown ── */
 const AchievementsSection = styled.div`
   position: relative;
@@ -469,13 +515,13 @@ const Panel = styled.div`
 const Card = styled.div`
   position: relative;
   min-height: 114vh;
-  margin-left: clamp(0.5rem, 3.5vw, 3.5rem);
-  margin-right: -6vw;
+  margin-left: ${({ $flip }) => ($flip ? '-6vw' : 'clamp(0.5rem, 3.5vw, 3.5rem)')};
+  margin-right: ${({ $flip }) => ($flip ? 'clamp(0.5rem, 3.5vw, 3.5rem)' : '-6vw')};
   background: ${({ $bg }) => $bg};
   color: ${({ $fg }) => $fg};
-  border-radius: 56px 0 0 0;
-  transform: rotate(-1.4deg);
-  transform-origin: 0 0;
+  border-radius: ${({ $flip }) => ($flip ? '0 56px 0 0' : '56px 0 0 0')};
+  transform: rotate(${({ $flip }) => ($flip ? '1.4deg' : '-1.4deg')});
+  transform-origin: ${({ $flip }) => ($flip ? '100% 0' : '0 0')};
   overflow: hidden;
 
   @media (max-width: 860px) {
@@ -580,6 +626,10 @@ const About = () => {
   const frameRef = useRef(null);
   const tagRef = useRef(null);
   const stackRef = useRef(null);
+  const workRef = useRef(null);
+  const workLeftRef = useRef(null);
+  const workRightRef = useRef(null);
+  const workSubRef = useRef(null);
   const panelRefs = useRef([]);
   const innerRefs = useRef([]);
   const pillsRef = useRef([]);
@@ -659,6 +709,24 @@ const About = () => {
   }, []);
 
   useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(workLeftRef.current, { xPercent: -70 }, {
+        xPercent: 0, ease: "none",
+        scrollTrigger: { trigger: workRef.current, start: "top 90%", end: "top 25%", scrub: 0.6 },
+      });
+      gsap.fromTo(workRightRef.current, { xPercent: 70 }, {
+        xPercent: 0, ease: "none",
+        scrollTrigger: { trigger: workRef.current, start: "top 90%", end: "top 25%", scrub: 0.6 },
+      });
+      gsap.from(workSubRef.current, {
+        y: 40, opacity: 0, ease: "none",
+        scrollTrigger: { trigger: workRef.current, start: "top 45%", end: "top 10%", scrub: 0.6 },
+      });
+    }, workRef);
+    return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
     gsap.to(pillsRef.current, {
       opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: "power3.out",
       scrollTrigger: { trigger: pillsRef.current[0], start: "top 90%", toggleActions: "play none none reverse" },
@@ -725,7 +793,7 @@ const About = () => {
 
         {PANELS.map((p, i) => (
           <Panel key={p.event} $i={i} ref={(el) => (panelRefs.current[i] = el)}>
-            <Card $bg={p.bg} $fg={p.fg}>
+            <Card $bg={p.bg} $fg={p.fg} $flip={i % 2 === 1}>
               <PanelInner ref={(el) => (innerRefs.current[i] = el)}>
                 <div>
                   <PanelIndex>0{i + 1} / 0{PANELS.length}</PanelIndex>
@@ -779,6 +847,15 @@ const About = () => {
           </Grid>
         </AchievementsInner>
       </AchievementsSection>
+
+      <WorkSection ref={workRef}>
+        <WorkTitle>
+          <span ref={workLeftRef}>My</span>
+          <span ref={workRightRef}>Work</span>
+        </WorkTitle>
+        <WorkSub ref={workSubRef}>Built with the best in AI, automation &amp; full stack.</WorkSub>
+        <WorkMark>✦</WorkMark>
+      </WorkSection>
     </Section>
   );
 };
