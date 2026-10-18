@@ -6,7 +6,6 @@ import About from "../components/Sections/About";
 import Experience from "../components/Sections/Experience";
 import Skills from "../components/Sections/Skills";
 import PortfolioSection from "../components/Sections/home/PortfolioSection";
-import HackathonSection from "../components/Sections/home/HackathonSection";
 import Contact from "../components/Sections/Contact";
 import Marquee from "../components/Marquee";
 
@@ -54,8 +53,6 @@ const Home = () => {
       <Skills />
       <SectionDivider><span>✦</span></SectionDivider>
       <PortfolioSection />
-      <SectionDivider><span>✦</span></SectionDivider>
-      <HackathonSection />
       <SectionDivider><span>✦</span></SectionDivider>
       <Contact />
     </Container>
