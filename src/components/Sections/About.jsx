@@ -34,28 +34,28 @@ const PANELS = [
     event: "Technothon", year: "2023", medal: "🏆", prize: "State Level Project Winner",
     desc: "Built and demoed a winning project against top college teams at state level.",
     chips: ["2023", "State Level", "Project Winner"],
-    bg: "linear-gradient(160deg, rgba(92,68,28,0.94) 0%, rgba(122,90,28,0.9) 100%)", solid: "#3d2c10",
+    bg: "linear-gradient(160deg, #5c441c 0%, #7a5a1c 100%)", solid: "#3d2c10",
     fg: "#fff6dc", dim: "#f0d98a", img: hack1,
   },
   {
     event: "Nextech Hackathon", year: "2024", medal: "🥇", prize: "1st Place Winner",
     desc: "Shipped a working prototype inside the sprint window and took first place.",
     chips: ["2024", "1st Place", "Rapid Prototype"],
-    bg: "linear-gradient(160deg, rgba(140,104,34,0.94) 0%, rgba(176,134,46,0.9) 100%)", solid: "#4a3512",
+    bg: "linear-gradient(160deg, #8c6822 0%, #b0862e 100%)", solid: "#4a3512",
     fg: "#fbf3dc", dim: "#ffe9a8", img: hack2,
   },
   {
     event: "Oscillation Hackathon", year: "2025", medal: "🥇", prize: "1st Place Winner",
     desc: "Led the team to an end-to-end AI-powered build and a first place finish.",
     chips: ["2025", "1st Place", "AI / ML"],
-    bg: "linear-gradient(160deg, rgba(201,168,76,0.95) 0%, rgba(224,192,106,0.92) 100%)", solid: "#3a2a0a",
+    bg: "linear-gradient(160deg, #c9a84c 0%, #e0c06a 100%)", solid: "#3a2a0a",
     fg: "#1f1606", dim: "#fff3c9", img: hack3,
   },
   {
     event: "Smart India Hackathon", year: "2026", medal: "🏅", prize: "Top 3 Team — National",
     desc: "Represented the team at the national finals and finished in the top three.",
     chips: ["2026", "National", "Top 3"],
-    bg: "linear-gradient(160deg, rgba(240,217,138,0.96) 0%, rgba(248,236,192,0.94) 100%)", solid: "#f2dd94",
+    bg: "linear-gradient(160deg, #f0d98a 0%, #f8ecc0 100%)", solid: "#f2dd94",
     fg: "#1f1606", dim: "#7a5a14", img: hack4,
   },
 ];
@@ -421,7 +421,7 @@ const IntroCard = styled.div`
   width: 86%;
   margin-top: 24vh;
   min-height: 62vh;
-  background: rgba(245, 236, 210, 0.95);
+  background: #f5ecd2;
   color: #3d2c10;
   border-radius: 0 56px 0 0;
   padding: 2.5rem clamp(1rem, 4vw, 3rem);
