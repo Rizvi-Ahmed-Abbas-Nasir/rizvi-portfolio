@@ -369,7 +369,7 @@ const Stack = styled.div`
 const IntroPanel = styled.div`
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: 80vh;
   z-index: 1;
   display: flex;
   align-items: flex-start;
@@ -379,11 +379,11 @@ const IntroPanel = styled.div`
 const IntroCard = styled.div`
   width: calc(100% + 4vw);
   margin-top: 0;
-  min-height: 110vh;
+  min-height: 100vh;
   background: #f5ecd2;
   color: #3d2c10;
   border-radius: 0 56px 0 0;
-  padding: 2.5rem clamp(1rem, 4vw, 3rem);
+  padding: 2.5rem clamp(1rem, 4vw, 3rem) calc(2.5rem + 20vh);
   display: flex;
   align-items: center;
   gap: clamp(1rem, 4vw, 4rem);
