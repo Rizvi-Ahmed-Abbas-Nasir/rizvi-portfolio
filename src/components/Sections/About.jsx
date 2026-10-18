@@ -72,7 +72,7 @@ const Section = styled.section`
 /* Tall scroll track that drives the scrub timeline */
 const ShowcaseTrack = styled.div`
   position: relative;
-  height: 300vh;
+  height: 400vh;
   @media (max-width: 860px) {
     height: auto;
   }
@@ -163,7 +163,7 @@ const FrameStage = styled.div`
   border-radius: 14px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   overflow: hidden;
-  will-change: transform;
+  will-change: transform, width, height;
   transform-origin: center center;
 
   @media (max-width: 860px) {
@@ -403,7 +403,7 @@ const Stack = styled.div`
   z-index: 2;
   overflow-x: clip;
   @media (min-width: 861px) {
-    margin-top: -100vh;
+    margin-top: -200vh;
   }
 `;
 
@@ -456,7 +456,7 @@ const IntroTitle = styled.h3`
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 800;
-  font-size: min(10vw, 20vh);
+  font-size: min(8.2vw, 18vh);
   line-height: 0.85;
   letter-spacing: -0.03em;
   text-transform: uppercase;
@@ -617,7 +617,7 @@ const About = () => {
       mq.add("(min-width: 861px)", () => {
         const frame = frameRef.current;
         const block = blockRef.current;
-        gsap.set(frame, { rotate: -7 });
+        gsap.set(frame, { rotate: -7, right: "auto", left: `${(frame.offsetLeft / block.offsetWidth) * 100}%` });
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -629,12 +629,14 @@ const About = () => {
           },
         });
 
+        const stage = trackRef.current.firstElementChild;
         tl.to(frame, {
           rotate: 0,
           borderRadius: 0,
-          x: () => block.offsetWidth / 2 - (frame.offsetLeft + frame.offsetWidth / 2),
-          y: () => block.offsetHeight / 2 - (frame.offsetTop + frame.offsetHeight / 2),
-          scale: () => Math.max(window.innerWidth / frame.offsetWidth, window.innerHeight / frame.offsetHeight) * 1.02,
+          width: () => stage.offsetWidth,
+          height: () => stage.offsetHeight,
+          x: () => -(block.offsetLeft + frame.offsetLeft),
+          y: () => -(block.offsetTop + frame.offsetTop),
           ease: "power1.inOut",
           duration: 1,
         }, 0)
