@@ -205,6 +205,15 @@ const FrameSlide = styled.div`
   }
 `;
 
+const FrameVeil = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(92, 68, 28, 0.85) 0%, rgba(92, 68, 28, 0.35) 45%, rgba(4, 3, 2, 0.25) 100%);
+`;
+
 const FrameTopBar = styled.div`
   position: absolute;
   top: 0;
@@ -392,6 +401,9 @@ const StatCard = styled.div`
 const Stack = styled.div`
   position: relative;
   z-index: 2;
+  @media (min-width: 861px) {
+    margin-top: -100vh;
+  }
 `;
 
 const Panel = styled.div`
@@ -406,7 +418,7 @@ const Panel = styled.div`
   backdrop-filter: blur(22px) saturate(1.2);
   -webkit-backdrop-filter: blur(22px) saturate(1.2);
   z-index: ${({ $i }) => $i + 1};
-  clip-path: ${({ $i }) => ($i === 0 ? 'none' : 'polygon(0 clamp(24px, 3.5vw, 56px), 100% 0, 100% 100%, 0 100%)')};
+  clip-path: ${({ $i }) => 'polygon(0 clamp(24px, 3.5vw, 56px), 100% 0, 100% 100%, 0 100%)'};
 
   @media (max-width: 860px) {
     height: auto;
@@ -547,7 +559,7 @@ const About = () => {
           scrollTrigger: {
             trigger: trackRef.current,
             start: "top top",
-            end: "bottom bottom",
+            end: () => "+=" + window.innerHeight,
             scrub: 0.8,
             invalidateOnRefresh: true,
           },
@@ -564,7 +576,9 @@ const About = () => {
         }, 0)
           .to(nameTopRef.current, { xPercent: -80, opacity: 0, ease: "power1.in", duration: 0.55 }, 0)
           .to(nameBottomRef.current, { xPercent: 80, opacity: 0, ease: "power1.in", duration: 0.55 }, 0)
-          .to(tagRef.current, { opacity: 0, y: -20, ease: "none", duration: 0.3 }, 0);
+          .to(tagRef.current, { opacity: 0, y: -20, ease: "none", duration: 0.3 }, 0)
+          .to(frame.querySelectorAll(".frame-ui"), { opacity: 0, ease: "none", duration: 0.35 }, 0.2)
+          .to(frame.querySelector(".frame-veil"), { opacity: 1, ease: "none", duration: 0.5 }, 0.5);
       });
 
       mq.add("(max-width: 860px)", () => {
@@ -626,12 +640,14 @@ const About = () => {
                 </FrameSlide>
               ))}
 
-              <FrameTopBar>
+              <FrameVeil className="frame-veil" />
+
+              <FrameTopBar className="frame-ui">
                 <RecDot>Rec</RecDot>
                 <FrameClock>00:{mm}</FrameClock>
               </FrameTopBar>
 
-              <FrameBottomBar>
+              <FrameBottomBar className="frame-ui">
                 <ReelLabel>✦ Achievements Reel</ReelLabel>
                 <ReelTitle>{REEL[active].label} — {REEL[active].title}</ReelTitle>
               </FrameBottomBar>
