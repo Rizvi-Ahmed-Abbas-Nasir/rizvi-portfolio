@@ -105,10 +105,14 @@ const Eyebrow = styled.div`
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  position: relative;
+  z-index: 3;
+  @media (max-width: 860px) { order: 0; }
 `;
 
 const NameRow = styled.div`
   position: relative;
+  z-index: 3;
   width: 100%;
   max-width: 1500px;
   display: flex;
@@ -149,43 +153,35 @@ const NameBottom = styled.h2`
   @media (max-width: 860px) { align-self: center; font-size: clamp(3.5rem, 20vw, 6rem); }
 `;
 
-/* The "video" frame sits BEHIND the letters and scales up on scroll */
-const FrameStage = styled.div`
+/* Full-size layer behind the letters; scaled down into the slot, scaled up on scroll */
+const FrameLayer = styled.div`
   position: absolute;
+  inset: 0;
   z-index: 1;
+  overflow: hidden;
+  transform-origin: center center;
+  will-change: transform;
+
+  @media (max-width: 860px) {
+    position: relative;
+    inset: auto;
+    order: 2;
+    width: min(90vw, 420px);
+    aspect-ratio: 16 / 10;
+    border-radius: 14px;
+    will-change: auto;
+  }
+`;
+
+/* Invisible marker for where the small frame sits beside the name */
+const FrameSlot = styled.div`
+  position: absolute;
   right: 14%;
   top: -6%;
   width: clamp(240px, 28vw, 440px);
   aspect-ratio: 16 / 10;
-  border: 1px solid rgba(201, 168, 76, 0.35);
-  border-radius: 14px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  will-change: transform, width, height;
-  transform-origin: center center;
-
-  @media (max-width: 860px) {
-    position: relative;
-    right: auto;
-    top: auto;
-    width: min(90vw, 420px);
-  }
-`;
-
-const FrameOrnament = styled.div`
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  border-color: var(--accent-gold);
-  border-style: solid;
-  opacity: 0.6;
-  z-index: 4;
   pointer-events: none;
-
-  &.tl { top: 6px; left: 6px; border-width: 1px 0 0 1px; }
-  &.tr { top: 6px; right: 6px; border-width: 1px 1px 0 0; }
-  &.bl { bottom: 6px; left: 6px; border-width: 0 0 1px 1px; }
-  &.br { bottom: 6px; right: 6px; border-width: 0 1px 1px 0; }
+  @media (max-width: 860px) { display: none; }
 `;
 
 const FrameSlide = styled.div`
@@ -211,24 +207,24 @@ const FrameTopBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.6rem 0.8rem;
+  padding: 2rem 2.4rem;
   background: linear-gradient(to bottom, rgba(4, 3, 2, 0.75), transparent);
 `;
 
 const RecDot = styled.span`
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.8rem;
   font-family: var(--font-mono);
-  font-size: 0.55rem;
+  font-size: 1.8rem;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: #f5f0e8;
 
   &::before {
     content: '';
-    width: 6px;
-    height: 6px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     background: var(--accent-rust);
     animation: pulse-glow 1.6s ease-in-out infinite;
@@ -237,7 +233,7 @@ const RecDot = styled.span`
 
 const FrameClock = styled.span`
   font-family: var(--font-mono);
-  font-size: 0.55rem;
+  font-size: 1.8rem;
   letter-spacing: 1px;
   color: rgba(245, 240, 232, 0.7);
 `;
@@ -248,23 +244,23 @@ const FrameBottomBar = styled.div`
   left: 0;
   right: 0;
   z-index: 5;
-  padding: 1.2rem 0.9rem 0.8rem;
+  padding: 4rem 2.4rem 2.2rem;
   background: linear-gradient(to top, rgba(4, 3, 2, 0.92), transparent);
 `;
 
 const ReelLabel = styled.span`
   font-family: var(--font-mono);
-  font-size: 0.55rem;
-  letter-spacing: 2px;
+  font-size: 1.7rem;
+  letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--accent-gold);
   display: block;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.5rem;
 `;
 
 const ReelTitle = styled.span`
   font-family: var(--font-display);
-  font-size: 0.85rem;
+  font-size: 3.2rem;
   font-weight: 700;
   color: #f5f0e8;
 `;
@@ -279,9 +275,12 @@ const TagLine = styled.p`
   text-align: center;
 
   span { color: var(--accent-gold); }
+  position: relative;
+  z-index: 3;
 
   @media (max-width: 860px) {
     margin-top: 0;
+    order: 3;
   }
 `;
 
@@ -462,8 +461,6 @@ const PanelInner = styled.div`
   grid-template-columns: 1fr 1.1fr;
   gap: clamp(1.5rem, 4vw, 4rem);
   align-items: start;
-  will-change: transform;
-
   @media (max-width: 860px) {
     grid-template-columns: 1fr;
     padding-top: 3rem;
@@ -533,7 +530,7 @@ const PanelPhoto = styled.div`
   border-radius: 16px;
   overflow: hidden;
   transform: rotate(3deg);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
   border: 4px solid ${({ $fg }) => $fg};
 
   img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -542,6 +539,41 @@ const PanelPhoto = styled.div`
 /* ═══════════════════════════════════════════════════
    Component
    ═══════════════════════════════════════════════════ */
+const Reel = () => {
+  const [active, setActive] = useState(0);
+  const [elapsed, setElapsed] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setActive((c) => (c + 1) % REEL.length);
+      setElapsed((e) => e + 1);
+    }, 1800);
+    return () => clearInterval(id);
+  }, []);
+
+  const sec = String(elapsed % 60).padStart(2, "0");
+
+  return (
+    <>
+      {REEL.map((slide, i) => (
+        <FrameSlide key={i} $active={i === active}>
+          <img src={slide.img} alt={slide.label} decoding="async" />
+        </FrameSlide>
+      ))}
+
+      <FrameTopBar className="frame-ui">
+        <RecDot>Rec</RecDot>
+        <FrameClock>00:{sec}</FrameClock>
+      </FrameTopBar>
+
+      <FrameBottomBar className="frame-ui">
+        <ReelLabel>✦ Achievements Reel</ReelLabel>
+        <ReelTitle>{REEL[active].label} — {REEL[active].title}</ReelTitle>
+      </FrameBottomBar>
+    </>
+  );
+};
+
 const About = () => {
   const trackRef = useRef(null);
   const nameTopRef = useRef(null);
@@ -555,21 +587,7 @@ const About = () => {
   const workRightRef = useRef(null);
   const workSubRef = useRef(null);
   const workStatsRef = useRef([]);
-  const panelRefs = useRef([]);
-  const innerRefs = useRef([]);
-
-  const [active, setActive] = useState(0);
-  const [elapsed, setElapsed] = useState(0);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setActive((c) => (c + 1) % REEL.length);
-      setElapsed((e) => e + 1);
-    }, 1800);
-    return () => clearInterval(id);
-  }, []);
-
-  const mm = elapsed % 60 < 10 ? `0${elapsed % 60}` : `${elapsed % 60}`;
+  const slotRef = useRef(null);
 
   /* Scroll-scrub: frame moves to centre and fills the screen, letters slide away */
   useEffect(() => {
@@ -577,35 +595,37 @@ const About = () => {
       const mq = gsap.matchMedia();
 
       mq.add("(min-width: 861px)", () => {
-        const frame = frameRef.current;
+        const layer = frameRef.current;
+        const slot = slotRef.current;
         const block = blockRef.current;
-        gsap.set(frame, { rotate: -7, right: "auto", left: `${(frame.offsetLeft / block.offsetWidth) * 100}%` });
+        const sticky = layer.parentElement;
+
+        const geo = () => {
+          const sw = sticky.offsetWidth;
+          const sh = sticky.offsetHeight;
+          const cx = block.offsetLeft + slot.offsetLeft + slot.offsetWidth / 2;
+          const cy = block.offsetTop + slot.offsetTop + slot.offsetHeight / 2;
+          return { s: slot.offsetWidth / sw, x: cx - sw / 2, y: cy - sh / 2 };
+        };
 
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: trackRef.current,
             start: "top top",
             end: () => "+=" + window.innerHeight,
-            scrub: 0.8,
+            scrub: 0.5,
             invalidateOnRefresh: true,
           },
         });
 
-        const stage = trackRef.current.firstElementChild;
-        tl.to(frame, {
-          rotate: 0,
-          borderRadius: 0,
-          width: () => stage.offsetWidth,
-          height: () => stage.offsetHeight,
-          x: () => -(block.offsetLeft + frame.offsetLeft),
-          y: () => -(block.offsetTop + frame.offsetTop),
-          ease: "power1.inOut",
-          duration: 1,
-        }, 0)
+        tl.fromTo(layer,
+          { x: () => geo().x, y: () => geo().y, scale: () => geo().s, rotate: -7, borderRadius: () => 14 / geo().s },
+          { x: 0, y: 0, scale: 1, rotate: 0, borderRadius: 0, ease: "power1.inOut", duration: 1, immediateRender: true },
+          0)
           .to(nameTopRef.current, { xPercent: -80, opacity: 0, ease: "power1.in", duration: 0.55 }, 0)
           .to(nameBottomRef.current, { xPercent: 80, opacity: 0, ease: "power1.in", duration: 0.55 }, 0)
           .to(tagRef.current, { opacity: 0, y: -20, ease: "none", duration: 0.3 }, 0)
-          .to(frame.querySelectorAll(".frame-ui"), { opacity: 0, ease: "none", duration: 0.35 }, 0.2);
+          .to(layer.querySelectorAll(".frame-ui"), { opacity: 0, ease: "none", duration: 0.35 }, 0.2);
       });
 
       mq.add("(max-width: 860px)", () => {
@@ -613,20 +633,6 @@ const About = () => {
       });
     }, trackRef);
 
-    return () => ctx.revert();
-  }, []);
-
-  /* Panels: content rises in, previous panel recedes as the next slides over */
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      innerRefs.current.forEach((inner, i) => {
-        if (!inner) return;
-        gsap.from(inner, {
-          y: 60, opacity: 0, ease: "none",
-          scrollTrigger: { trigger: panelRefs.current[i], start: "top 95%", end: "top 40%", scrub: 0.6 },
-        });
-      });
-    }, stackRef);
     return () => ctx.revert();
   }, []);
 
@@ -656,29 +662,15 @@ const About = () => {
     <Section id="about">
       <ShowcaseTrack ref={trackRef}>
         <Sticky>
+          <FrameLayer ref={frameRef}>
+            <Reel />
+          </FrameLayer>
+
           <Eyebrow>✦ The Builder Behind The Code</Eyebrow>
 
           <NameRow ref={blockRef}>
             <NameTop ref={nameTopRef}>Rizvi</NameTop>
-
-            <FrameStage ref={frameRef}>
-              {REEL.map((slide, i) => (
-                <FrameSlide key={i} $active={i === active}>
-                  <img src={slide.img} alt={slide.label} loading="lazy" />
-                </FrameSlide>
-              ))}
-
-              <FrameTopBar className="frame-ui">
-                <RecDot>Rec</RecDot>
-                <FrameClock>00:{mm}</FrameClock>
-              </FrameTopBar>
-
-              <FrameBottomBar className="frame-ui">
-                <ReelLabel>✦ Achievements Reel</ReelLabel>
-                <ReelTitle>{REEL[active].label} — {REEL[active].title}</ReelTitle>
-              </FrameBottomBar>
-            </FrameStage>
-
+            <FrameSlot ref={slotRef} />
             <NameBottom ref={nameBottomRef}>Abbas</NameBottom>
           </NameRow>
 
@@ -697,9 +689,9 @@ const About = () => {
         </IntroPanel>
 
         {PANELS.map((p, i) => (
-          <Panel key={p.event} $i={i} ref={(el) => (panelRefs.current[i] = el)}>
+          <Panel key={p.event} $i={i}>
             <Card $bg={p.bg} $fg={p.fg} $flip={i % 2 === 1}>
-              <PanelInner ref={(el) => (innerRefs.current[i] = el)}>
+              <PanelInner>
                 <div>
                   <PanelIndex>0{i + 1} / 0{PANELS.length}</PanelIndex>
                   <PanelTitle $dim={p.dim}>
@@ -707,7 +699,7 @@ const About = () => {
                     <em>{p.event.split(" ").slice(1).join(" ") || p.year}</em>
                   </PanelTitle>
                   <PanelPhoto $fg={p.fg}>
-                    <img src={p.img} alt={p.event} loading="lazy" />
+                    <img src={p.img} alt={p.event} loading="lazy" decoding="async" />
                   </PanelPhoto>
                 </div>
                 <div>

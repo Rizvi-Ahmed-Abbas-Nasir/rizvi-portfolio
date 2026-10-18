@@ -296,7 +296,12 @@ const Hero = () => {
     window.addEventListener("resize", onResize);
     window.addEventListener("mousemove", onMove);
 
+    let visible = true;
+    const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
+    io.observe(canvas);
+
     const draw = () => {
+      if (!visible) { rafRef.current = requestAnimationFrame(draw); return; }
       ctx.clearRect(0, 0, W, H);
       dots.forEach((d) => {
         const dx = d.x - mouse.x, dy = d.y - mouse.y;
@@ -319,6 +324,7 @@ const Hero = () => {
     draw();
 
     return () => {
+      io.disconnect();
       window.removeEventListener("resize", onResize);
       window.removeEventListener("mousemove", onMove);
       cancelAnimationFrame(rafRef.current);
