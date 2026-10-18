@@ -24,7 +24,7 @@ const REEL = [
 ];
 
 const stats = [
-  { number: "3+", label: "Years Exp." },
+  { number: "3+", label: "Years Experience" },
   { number: "10+", label: "Projects" },
   { number: "4", label: "Hackathon Wins" },
 ];
@@ -59,8 +59,6 @@ const PANELS = [
     fg: "#1f1606", dim: "#7a5a14", img: hack4,
   },
 ];
-
-const pills = ["React.js", "Django", "AI / ML", "AWS", "Automation", "Hackathon Winner"];
 
 /* ═══════════════════════════════════════════════════
    Styled Components
@@ -326,114 +324,40 @@ const WorkSub = styled.p`
   text-transform: uppercase;
 `;
 
-const WorkMark = styled.div`
-  margin-top: 2rem;
-  font-family: var(--font-mono);
-  font-size: 1.4rem;
-  color: #a67c2a;
-`;
-
-/* ── Achievements, revealed once the reel has grown ── */
-const AchievementsSection = styled.div`
-  position: relative;
-  z-index: 2;
-  background: var(--bg-primary);
-  padding: var(--section-padding) var(--container-padding);
-`;
-
-const AchievementsInner = styled.div`
-  max-width: 1100px;
-  margin: 0 auto;
-`;
-
-const PillsRow = styled.div`
+const WorkStats = styled.div`
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-bottom: 2.5rem;
+  gap: clamp(1rem, 3vw, 3rem);
+  margin-top: clamp(2.5rem, 7vh, 5rem);
+  padding: 0 var(--container-padding);
 `;
 
-const Pill = styled.span`
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  border: 1px solid rgba(201, 168, 76, 0.22);
-  background: rgba(201, 168, 76, 0.04);
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  opacity: 0;
-  transform: translateY(14px);
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  max-width: 760px;
-  align-items: start;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-`;
-
-const Bio = styled.p`
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  line-height: 1.9;
-  color: var(--text-secondary);
-`;
-
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-top: 2rem;
-  @media (max-width: 480px) { grid-template-columns: repeat(2, 1fr); }
-`;
-
-const StatCard = styled.div`
-  background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  padding: 1.3rem 1rem;
-  text-align: center;
-  transition: all 0.4s var(--ease-out-expo);
-  position: relative;
-  opacity: 0;
-  transform: translateY(24px);
-
-  &:hover {
-    background: var(--bg-card-hover);
-    border-color: rgba(201, 168, 76, 0.3);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(201, 168, 76, 0.08);
-  }
+const WorkStat = styled.div`
+  min-width: 190px;
+  padding-top: 1rem;
+  border-top: 2px solid #3d2c10;
+  text-align: left;
 
   .number {
     font-family: var(--font-display);
-    font-size: 1.8rem;
-    font-weight: 800;
     font-style: italic;
-    background: var(--accent-gradient-text);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-weight: 800;
+    font-size: clamp(3rem, 6.5vw, 5.5rem);
+    line-height: 1;
+    color: #3d2c10;
   }
 
   .label {
+    margin-top: 0.4rem;
     font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: var(--text-muted);
+    font-size: 0.8rem;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-top: 0.2rem;
+    color: #7a5a1c;
   }
 `;
 
-/* ── Colourful diagonal panels that stack over each other ── */
 const Stack = styled.div`
   position: relative;
   z-index: 2;
@@ -630,11 +554,9 @@ const About = () => {
   const workLeftRef = useRef(null);
   const workRightRef = useRef(null);
   const workSubRef = useRef(null);
+  const workStatsRef = useRef([]);
   const panelRefs = useRef([]);
   const innerRefs = useRef([]);
-  const pillsRef = useRef([]);
-  const bioRef = useRef(null);
-  const statsRef = useRef([]);
 
   const [active, setActive] = useState(0);
   const [elapsed, setElapsed] = useState(0);
@@ -718,33 +640,16 @@ const About = () => {
         xPercent: 0, ease: "none",
         scrollTrigger: { trigger: workRef.current, start: "top 90%", end: "top 25%", scrub: 0.6 },
       });
+      gsap.from(workStatsRef.current, {
+        y: 50, opacity: 0, stagger: 0.15, ease: "none",
+        scrollTrigger: { trigger: workRef.current, start: "top 30%", end: "top -10%", scrub: 0.6 },
+      });
       gsap.from(workSubRef.current, {
         y: 40, opacity: 0, ease: "none",
         scrollTrigger: { trigger: workRef.current, start: "top 45%", end: "top 10%", scrub: 0.6 },
       });
     }, workRef);
     return () => ctx.revert();
-  }, []);
-
-  useEffect(() => {
-    gsap.to(pillsRef.current, {
-      opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: "power3.out",
-      scrollTrigger: { trigger: pillsRef.current[0], start: "top 90%", toggleActions: "play none none reverse" },
-    });
-
-    gsap.set(bioRef.current, { opacity: 0, y: 24 });
-    gsap.to(bioRef.current, {
-      opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
-      scrollTrigger: { trigger: bioRef.current, start: "top 88%", toggleActions: "play none none reverse" },
-    });
-
-    statsRef.current.forEach((el, i) => {
-      if (!el) return;
-      gsap.to(el, {
-        opacity: 1, y: 0, duration: 0.6, delay: i * 0.1, ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 92%", toggleActions: "play none none reverse" },
-      });
-    });
   }, []);
 
   return (
@@ -820,41 +725,20 @@ const About = () => {
         ))}
       </Stack>
 
-      <AchievementsSection>
-        <AchievementsInner>
-          <PillsRow>
-            {pills.map((p, i) => (
-              <Pill key={p} ref={(el) => (pillsRef.current[i] = el)}>{p}</Pill>
-            ))}
-          </PillsRow>
-
-          <Grid>
-            <Bio ref={bioRef}>
-              I'm Rizvi Ahmed Abbas, a passionate software engineer with a solid background
-              in AI/ML, automation, and a proven track record of winning hackathons. With
-              expertise in Django frameworks, cloud platforms (AWS EC2, S3), and database
-              management, I enjoy building scalable applications that drive user satisfaction
-              and measurable results.
-            </Bio>
-            <StatsGrid>
-              {stats.map((stat, index) => (
-                <StatCard key={stat.label} ref={(el) => (statsRef.current[index] = el)}>
-                  <div className="number">{stat.number}</div>
-                  <div className="label">{stat.label}</div>
-                </StatCard>
-              ))}
-            </StatsGrid>
-          </Grid>
-        </AchievementsInner>
-      </AchievementsSection>
-
       <WorkSection ref={workRef}>
         <WorkTitle>
           <span ref={workLeftRef}>My</span>
           <span ref={workRightRef}>Work</span>
         </WorkTitle>
         <WorkSub ref={workSubRef}>Built with the best in AI, automation &amp; full stack.</WorkSub>
-        <WorkMark>✦</WorkMark>
+        <WorkStats>
+          {stats.map((st, i) => (
+            <WorkStat key={st.label} ref={(el) => (workStatsRef.current[i] = el)}>
+              <div className="number">{st.number}</div>
+              <div className="label">{st.label}</div>
+            </WorkStat>
+          ))}
+        </WorkStats>
       </WorkSection>
     </Section>
   );
