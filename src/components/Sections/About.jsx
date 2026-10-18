@@ -34,28 +34,28 @@ const PANELS = [
     event: "Technothon", year: "2023", medal: "🏆", prize: "State Level Project Winner",
     desc: "Built and demoed a winning project against top college teams at state level.",
     chips: ["2023", "State Level", "Project Winner"],
-    bg: "linear-gradient(160deg, #1c1409 0%, #3a2a0f 100%)", solid: "#2a1f0c",
-    fg: "#f5ecd2", dim: "#b8963f", img: hack1,
+    bg: "linear-gradient(160deg, rgba(92,68,28,0.72) 0%, rgba(122,90,28,0.62) 100%)", solid: "#3d2c10",
+    fg: "#fff6dc", dim: "#f0d98a", img: hack1,
   },
   {
     event: "Nextech Hackathon", year: "2024", medal: "🥇", prize: "1st Place Winner",
     desc: "Shipped a working prototype inside the sprint window and took first place.",
     chips: ["2024", "1st Place", "Rapid Prototype"],
-    bg: "linear-gradient(160deg, #4a3512 0%, #7a5a1c 100%)", solid: "#4a3512",
-    fg: "#fbf3dc", dim: "#e0bf6a", img: hack2,
+    bg: "linear-gradient(160deg, rgba(140,104,34,0.72) 0%, rgba(176,134,46,0.62) 100%)", solid: "#4a3512",
+    fg: "#fbf3dc", dim: "#ffe9a8", img: hack2,
   },
   {
     event: "Oscillation Hackathon", year: "2025", medal: "🥇", prize: "1st Place Winner",
     desc: "Led the team to an end-to-end AI-powered build and a first place finish.",
     chips: ["2025", "1st Place", "AI / ML"],
-    bg: "linear-gradient(160deg, #9a7625 0%, #c9a84c 100%)", solid: "#3a2a0a",
+    bg: "linear-gradient(160deg, rgba(201,168,76,0.78) 0%, rgba(224,192,106,0.7) 100%)", solid: "#3a2a0a",
     fg: "#1f1606", dim: "#fff3c9", img: hack3,
   },
   {
     event: "Smart India Hackathon", year: "2026", medal: "🏅", prize: "Top 3 Team — National",
     desc: "Represented the team at the national finals and finished in the top three.",
     chips: ["2026", "National", "Top 3"],
-    bg: "linear-gradient(160deg, #d9b95a 0%, #f2dd94 100%)", solid: "#f2dd94",
+    bg: "linear-gradient(160deg, rgba(240,217,138,0.82) 0%, rgba(248,236,192,0.76) 100%)", solid: "#f2dd94",
     fg: "#1f1606", dim: "#7a5a14", img: hack4,
   },
 ];
@@ -403,6 +403,8 @@ const Panel = styled.div`
   background: ${({ $bg }) => $bg};
   color: ${({ $fg }) => $fg};
   overflow: hidden;
+  backdrop-filter: blur(22px) saturate(1.2);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
   z-index: ${({ $i }) => $i + 1};
   clip-path: ${({ $i }) => ($i === 0 ? 'none' : 'polygon(0 clamp(24px, 3.5vw, 56px), 100% 0, 100% 100%, 0 100%)')};
 
@@ -582,13 +584,6 @@ const About = () => {
           y: 60, opacity: 0, ease: "none",
           scrollTrigger: { trigger: panelRefs.current[i], start: "top 95%", end: "top 40%", scrub: 0.6 },
         });
-        const next = panelRefs.current[i + 1];
-        if (next) {
-          gsap.to(inner, {
-            scale: 0.94, filter: "brightness(0.55)", ease: "none",
-            scrollTrigger: { trigger: next, start: "top bottom", end: "top top", scrub: 0.6 },
-          });
-        }
       });
     }, stackRef);
     return () => ctx.revert();
