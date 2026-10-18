@@ -456,16 +456,42 @@ const Card = styled.div`
 `;
 
 const PanelInner = styled.div`
-  padding: clamp(2.5rem, 7vh, 5rem) clamp(1.5rem, 4vw, 4rem) 2rem;
+  --pad: clamp(1.5rem, 4vw, 4rem);
+  min-height: 100vh;
+  padding: 7rem
+    ${({ $flip }) => ($flip ? 'var(--pad)' : 'calc(6vw + var(--pad))')}
+    4rem
+    ${({ $flip }) => ($flip ? 'calc(6vw + var(--pad))' : 'var(--pad)')};
   display: grid;
   grid-template-columns: 1fr 1.1fr;
   gap: clamp(1.5rem, 4vw, 4rem);
-  align-items: start;
+  align-items: stretch;
+
   @media (max-width: 860px) {
+    min-height: 0;
     grid-template-columns: 1fr;
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding: 3rem var(--pad);
   }
+`;
+
+const PanelRight = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const PanelNum = styled.div`
+  margin-top: auto;
+  align-self: flex-end;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: clamp(8rem, 20vw, 20rem);
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: ${({ $dim }) => $dim};
+  opacity: 0.28;
+  user-select: none;
+  @media (max-width: 860px) { display: none; }
 `;
 
 const PanelTitle = styled.h3`
@@ -691,7 +717,7 @@ const About = () => {
         {PANELS.map((p, i) => (
           <Panel key={p.event} $i={i}>
             <Card $bg={p.bg} $fg={p.fg} $flip={i % 2 === 1}>
-              <PanelInner>
+              <PanelInner $flip={i % 2 === 1}>
                 <div>
                   <PanelIndex>0{i + 1} / 0{PANELS.length}</PanelIndex>
                   <PanelTitle $dim={p.dim}>
@@ -702,7 +728,7 @@ const About = () => {
                     <img src={p.img} alt={p.event} loading="lazy" decoding="async" />
                   </PanelPhoto>
                 </div>
-                <div>
+                <PanelRight>
                   <Chips>
                     {p.chips.map((c) => (
                       <Chip key={c} $solid={p.solid} $fg={p.fg}>{c}</Chip>
@@ -710,7 +736,8 @@ const About = () => {
                   </Chips>
                   <PanelPrize>{p.medal} {p.prize}</PanelPrize>
                   <PanelDesc>{p.desc}</PanelDesc>
-                </div>
+                  <PanelNum $dim={p.dim}>0{i + 1}</PanelNum>
+                </PanelRight>
               </PanelInner>
             </Card>
           </Panel>
