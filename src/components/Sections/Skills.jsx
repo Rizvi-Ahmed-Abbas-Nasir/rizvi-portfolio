@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   SiReact, SiNodedotjs, SiMongodb, SiDocker, SiPython,
   SiJavascript, SiTypescript, SiGit, SiDjango, SiMysql,
@@ -10,14 +11,18 @@ import {
 import { FaAws, FaJava } from "react-icons/fa";
 import { VscCircuitBoard } from "react-icons/vsc";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Section = styled.section`
-  padding: var(--section-padding) var(--container-padding);
+  padding: var(--section-padding) 0;
   position: relative;
+  overflow: hidden;
 `;
 
-const Container = styled.div`
+const Header = styled.div`
   max-width: 1100px;
   margin: 0 auto;
+  padding: 0 var(--container-padding);
 `;
 
 const Title = styled.h2`
@@ -29,93 +34,101 @@ const Title = styled.h2`
   .italic { font-style: italic; color: var(--accent-gold); }
 `;
 
-const CategoryBlock = styled.div`
-  margin-top: 3rem;
-`;
-
-const CategoryHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-`;
-
-const CategoryLabel = styled.h3`
+const Hint = styled.p`
+  margin-top: 1rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 400;
+  font-size: 0.7rem;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--accent-gold);
-  white-space: nowrap;
+  color: var(--text-muted);
 `;
 
-const CategoryLine = styled.div`
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(201,168,76,0.3), transparent);
+const Marquee = styled.div`
+  margin-top: clamp(2.5rem, 7vh, 4.5rem);
+  width: 100%;
+  overflow: hidden;
 `;
 
-const SkillsGrid = styled.div`
+const Track = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
+  align-items: flex-start;
+  gap: clamp(1rem, 2vw, 2rem);
+  width: max-content;
+  will-change: transform;
+  padding-bottom: 6rem;
 `;
 
-const SkillCard = styled.div`
+const Item = styled.div`
+  flex-shrink: 0;
+  width: ${({ $v }) => $v.w};
+  margin-top: ${({ $v }) => $v.mt};
+`;
+
+const Card = styled.div`
+  position: relative;
+  width: 100%;
+  aspect-ratio: ${({ $v }) => $v.ratio};
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 1rem;
-  background: var(--bg-card);
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(201, 168, 76, 0.14), transparent 65%),
+    var(--bg-card);
   border: 1px solid var(--border-glass);
-  transition: all 0.35s var(--ease-out-expo);
-  cursor: default;
-  opacity: 0;
-  position: relative;
   overflow: hidden;
+  transition: border-color 0.4s ease, background 0.4s ease;
 
   &::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--accent-gold);
-    transform: scaleY(0);
-    transition: transform 0.3s ease;
-    transform-origin: bottom;
+    inset: 6px;
+    border: 1px solid rgba(201, 168, 76, 0.07);
+    pointer-events: none;
+  }
+
+  .index {
+    position: absolute;
+    top: 0.9rem;
+    left: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--text-muted);
   }
 
   .icon {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    transition: color 0.3s ease;
-    flex-shrink: 0;
-  }
-
-  .name {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 1px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    white-space: nowrap;
-    transition: color 0.3s ease;
+    font-size: clamp(3rem, 5.5vw, 5.5rem);
+    color: rgba(201, 168, 76, 0.5);
+    transition: color 0.4s ease, transform 0.5s var(--ease-out-expo);
   }
 
   &:hover {
-    background: var(--bg-card-hover);
-    border-color: rgba(201, 168, 76, 0.3);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 25px rgba(201, 168, 76, 0.08);
-
-    &::before { transform: scaleY(1); }
-    .icon { color: var(--accent-gold); }
-    .name { color: var(--text-primary); }
+    border-color: rgba(201, 168, 76, 0.45);
+    .icon { color: var(--accent-gold); transform: scale(1.12) translateY(-4px); }
   }
 `;
+
+const Caption = styled.div`
+  margin-top: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  white-space: nowrap;
+
+  span { color: var(--accent-gold); margin: 0 0.45rem; }
+  em { font-style: normal; color: var(--text-muted); }
+`;
+
+/* Card sizes and vertical offsets cycle so the row has a staggered, gallery feel */
+const VARIANTS = [
+  { w: "clamp(190px, 17vw, 300px)", ratio: "3 / 4", mt: "0" },
+  { w: "clamp(250px, 23vw, 380px)", ratio: "4 / 3", mt: "4rem" },
+  { w: "clamp(210px, 19vw, 320px)", ratio: "1 / 1", mt: "1.2rem" },
+  { w: "clamp(185px, 16vw, 280px)", ratio: "2 / 3", mt: "2.6rem" },
+  { w: "clamp(240px, 21vw, 350px)", ratio: "5 / 4", mt: "5.5rem" },
+];
 
 const skillCategories = [
   {
@@ -157,7 +170,7 @@ const skillCategories = [
     ],
   },
   {
-    label: "DevOps, Cloud & Automation",
+    label: "DevOps & Automation",
     skills: [
       { name: "AWS EC2 / S3", icon: FaAws },
       { name: "Docker", icon: SiDocker },
@@ -168,60 +181,118 @@ const skillCategories = [
   },
 ];
 
+const SKILLS = skillCategories.flatMap((cat) =>
+  cat.skills.map((s) => ({ ...s, category: cat.label }))
+);
+
+const renderSet = (hidden) =>
+  SKILLS.map((skill, i) => {
+    const Icon = skill.icon;
+    return (
+      <Item key={`${hidden ? "b" : "a"}-${skill.name}`} $v={VARIANTS[i % VARIANTS.length]} aria-hidden={hidden || undefined}>
+        <Card $v={VARIANTS[i % VARIANTS.length]}>
+          <span className="index">{String(i + 1).padStart(2, "0")}</span>
+          <Icon className="icon" />
+        </Card>
+        <Caption>
+          {skill.name}<span>●</span><em>{skill.category}</em>
+        </Caption>
+      </Item>
+    );
+  });
+
 const Skills = () => {
+  const sectionRef = useRef(null);
   const titleRef = useRef(null);
-  const cardsRef = useRef([]);
+  const trackRef = useRef(null);
 
   useEffect(() => {
     gsap.set(titleRef.current, { opacity: 0, y: 40 });
-    gsap.to(titleRef.current, {
+    const t = gsap.to(titleRef.current, {
       opacity: 1, y: 0, duration: 0.9, ease: "power3.out",
       scrollTrigger: { trigger: titleRef.current, start: "top 85%", toggleActions: "play none none reverse" },
     });
-
-    cardsRef.current.forEach((el, i) => {
-      if (!el) return;
-      gsap.to(el, {
-        opacity: 1, y: 0, duration: 0.5, delay: i * 0.04, ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 93%", toggleActions: "play none none reverse" },
-      });
-    });
+    return () => { t.scrollTrigger?.kill(); t.kill(); };
   }, []);
 
-  let cardIndex = 0;
+  /* Endless marquee: drifts on its own, speeds up / reverses with scroll, eases off on hover */
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return undefined;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let setW = 0;
+    let x = 0;
+    let boost = 0;
+    let slow = 1;
+    let slowTarget = 1;
+    let visible = false;
+
+    const measure = () => {
+      const a = track.children[0];
+      const b = track.children[SKILLS.length];
+      setW = a && b ? b.offsetLeft - a.offsetLeft : 0;
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(track);
+
+    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; });
+    io.observe(sectionRef.current);
+
+    const st = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top bottom",
+      end: "bottom top",
+      onUpdate: (self) => {
+        const v = self.getVelocity();
+        boost = gsap.utils.clamp(-900, 900, v * 0.35);
+      },
+    });
+
+    const onEnter = () => { slowTarget = 0.12; };
+    const onLeave = () => { slowTarget = 1; };
+    track.addEventListener("mouseenter", onEnter);
+    track.addEventListener("mouseleave", onLeave);
+
+    const tick = (_, deltaMs) => {
+      if (!visible || reduce || !setW) return;
+      const dt = Math.min(deltaMs, 50) / 1000;
+      slow += (slowTarget - slow) * 0.08;
+      boost *= 0.94;
+      x -= (60 * slow + boost) * dt;
+      if (x <= -setW) x += setW;
+      if (x > 0) x -= setW;
+      track.style.transform = `translate3d(${x}px, 0, 0)`;
+    };
+    gsap.ticker.add(tick);
+
+    return () => {
+      gsap.ticker.remove(tick);
+      st.kill();
+      ro.disconnect();
+      io.disconnect();
+      track.removeEventListener("mouseenter", onEnter);
+      track.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
 
   return (
-    <Section id="skills">
-      <Container>
+    <Section id="skills" ref={sectionRef}>
+      <Header>
         <div className="section-label">Skills &amp; Tools</div>
         <Title ref={titleRef}>
           My <span className="italic">Tech Arsenal</span>
         </Title>
-        {skillCategories.map((cat) => (
-          <CategoryBlock key={cat.label}>
-            <CategoryHeader>
-              <CategoryLabel>{cat.label}</CategoryLabel>
-              <CategoryLine />
-            </CategoryHeader>
-            <SkillsGrid>
-              {cat.skills.map((skill) => {
-                const idx = cardIndex++;
-                const Icon = skill.icon;
-                return (
-                  <SkillCard
-                    key={skill.name}
-                    ref={(el) => (cardsRef.current[idx] = el)}
-                    style={{ opacity: 0, transform: "translateY(20px)" }}
-                  >
-                    <Icon className="icon" />
-                    <span className="name">{skill.name}</span>
-                  </SkillCard>
-                );
-              })}
-            </SkillsGrid>
-          </CategoryBlock>
-        ))}
-      </Container>
+        <Hint>{SKILLS.length} tools · scroll to speed it up</Hint>
+      </Header>
+
+      <Marquee>
+        <Track ref={trackRef}>
+          {renderSet(false)}
+          {renderSet(true)}
+        </Track>
+      </Marquee>
     </Section>
   );
 };
