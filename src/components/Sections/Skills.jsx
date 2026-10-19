@@ -246,7 +246,7 @@ const Skills = () => {
       end: "bottom top",
       onUpdate: (self) => {
         const v = self.getVelocity();
-        boost = gsap.utils.clamp(-900, 900, v * 0.35);
+        boost = gsap.utils.clamp(-1600, 1600, v * 0.5);
       },
     });
 
@@ -260,7 +260,7 @@ const Skills = () => {
       const dt = Math.min(deltaMs, 50) / 1000;
       slow += (slowTarget - slow) * 0.08;
       boost *= 0.94;
-      x -= (60 * slow + boost) * dt;
+      x -= (150 * slow + boost) * dt;
       if (x <= -setW) x += setW;
       if (x > 0) x -= setW;
       track.style.transform = `translate3d(${x}px, 0, 0)`;
