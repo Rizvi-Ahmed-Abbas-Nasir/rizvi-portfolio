@@ -179,23 +179,6 @@ const BottomItem = styled.div`
   span { color: var(--text-secondary); }
 `;
 
-const ScrollCue = styled.div`
-  display: flex; align-items: center; gap: 0.6rem;
-  font-family: var(--font-mono); font-size: 0.6rem;
-  letter-spacing: 2px; text-transform: uppercase;
-  color: var(--text-muted); cursor: pointer;
-  transition: color 0.3s ease;
-  &:hover { color: var(--accent-gold); }
-  .arrow {
-    width: 24px; height: 24px;
-    border: 1px solid rgba(201,168,76,0.25);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.8rem;
-    animation: bob 2s ease-in-out infinite;
-  }
-  @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
-`;
-
 /* Circular badge — bottom-right, clears all other elements */
 const CircleBadge = styled.div`
   position: absolute;
@@ -232,7 +215,7 @@ const tags = ["React.js", "Node.js", "Django", "AI/ML", "AWS", "n8n", "Docker", 
    Component
 ───────────────────────────────────────── */
 const Hero = () => {
-  const { preloader, locoScroll } = useContextProvider();
+  const { preloader } = useContextProvider();
   const canvasRef = useRef(null);
   const nameLabelRef = useRef(null);
   const subRowRef = useRef(null);
@@ -533,16 +516,6 @@ const Hero = () => {
         <BottomItem>Mumbai, India · <span>2026</span></BottomItem>
         <BottomItem>Full Stack · AI / ML · Automation</BottomItem>
         <BottomItem><span>3+</span> Yrs Exp.</BottomItem>
-        <ScrollCue onClick={() => {
-          if (locoScroll) {
-            locoScroll.scrollTo("#about");
-          } else {
-            document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" });
-          }
-        }}>
-          <span className="arrow">↓</span>
-          Scroll
-        </ScrollCue>
       </BottomStrip>
     </Section>
   );

@@ -95,21 +95,6 @@ const Sticky = styled.div`
   }
 `;
 
-const Eyebrow = styled.div`
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--accent-gold);
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  position: relative;
-  z-index: 3;
-  @media (max-width: 860px) { order: 0; }
-`;
-
 const NameRow = styled.div`
   position: relative;
   z-index: 3;
@@ -691,8 +676,6 @@ const About = () => {
           <FrameLayer ref={frameRef}>
             <Reel />
           </FrameLayer>
-
-          <Eyebrow>✦ The Builder Behind The Code</Eyebrow>
 
           <NameRow ref={blockRef}>
             <NameTop ref={nameTopRef}>Rizvi</NameTop>
