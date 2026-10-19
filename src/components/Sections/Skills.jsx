@@ -282,10 +282,6 @@ const Ticker = styled.div`
   padding: 0.6rem 0;
 `;
 
-const TickerTop = styled(Ticker)`
-  margin-top: clamp(1.8rem, 4vh, 2.8rem);
-`;
-
 const TickerTrack = styled.div`
   display: flex;
   align-items: center;
@@ -472,11 +468,9 @@ const Skills = () => {
   const rightRef = useRef(null);
   const trackRef = useRef(null);
   const tickerRef = useRef(null);
-  const tickerTopRef = useRef(null);
 
   useMarquee(sectionRef, trackRef, { base: 150, dir: 1, count: ROW.length, hoverSlow: true });
   useMarquee(sectionRef, tickerRef, { base: 90, dir: -1, count: ALL_SKILLS.length * 2 });
-  useMarquee(sectionRef, tickerTopRef, { base: 90, dir: 1, count: ALL_SKILLS.length * 2 });
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -505,13 +499,6 @@ const Skills = () => {
           <ColSide>Shipped right.</ColSide>
         </Cols>
       </Header>
-
-      <TickerTop>
-        <TickerTrack ref={tickerTopRef}>
-          {renderTicker(false)}
-          {renderTicker(true)}
-        </TickerTrack>
-      </TickerTop>
 
       <Marquee>
         <Track ref={trackRef}>
