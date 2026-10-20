@@ -48,7 +48,7 @@ const PANELS = [
     event: "Oscillation Hackathon", year: "2025", medal: "🥇", prize: "1st Place Winner",
     desc: "Led the team to an end-to-end AI-powered build and a first place finish.",
     chips: ["2025", "1st Place", "AI / ML"],
-    bg: "linear-gradient(160deg, #c9a84c 0%, #e0c06a 100%)", solid: "#3a2a0a",
+    bg: "linear-gradient(160deg, #c9a84c 0%, #e0c06a 100%)", solid: "#fff3c9",
     fg: "#1f1606", dim: "#fff3c9", img: hack3,
   },
   {
