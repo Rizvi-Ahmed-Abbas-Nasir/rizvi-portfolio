@@ -81,6 +81,15 @@ const VARIANTS = [
   { w: "clamp(240px, 21vw, 350px)", ratio: "5 / 4", mt: "5.5rem" },
 ];
 
+/* Golden-tone card palettes, cycled so neighbouring cards differ */
+const PALETTES = [
+  { bg: "linear-gradient(160deg, #2a1f0c 0%, #5c441c 100%)", fg: "#fff6dc", accent: "#f0d98a", chipBg: "rgba(255,246,220,0.14)", chipFg: "#fff6dc" },
+  { bg: "linear-gradient(160deg, #c9a84c 0%, #e6c872 100%)", fg: "#1f1606", accent: "#1f1606", chipBg: "rgba(31,22,6,0.12)", chipFg: "#1f1606" },
+  { bg: "linear-gradient(160deg, #f5ecd2 0%, #ead9a8 100%)", fg: "#3d2c10", accent: "#a67c2a", chipBg: "rgba(61,44,16,0.1)", chipFg: "#3d2c10" },
+  { bg: "linear-gradient(160deg, #7a5a1c 0%, #b0862e 100%)", fg: "#fff6dc", accent: "#ffe9a8", chipBg: "rgba(255,246,220,0.16)", chipFg: "#fff6dc" },
+  { bg: "linear-gradient(160deg, #0f0c06 0%, #1d1608 100%)", fg: "#f0d98a", accent: "#c9a84c", chipBg: "rgba(201,168,76,0.14)", chipFg: "#c9a84c" },
+];
+
 const NOTE_OFFSETS = ["3rem", "0.5rem", "6rem", "1.5rem", "4.5rem"];
 
 const ALL_SKILLS = skillCategories.flatMap((c) => c.skills.map((s) => ({ ...s, category: c.label })));
@@ -187,56 +196,64 @@ const Card = styled.div`
   width: 100%;
   aspect-ratio: ${({ $v }) => $v.ratio};
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    radial-gradient(ellipse at 50% 35%, rgba(201, 168, 76, 0.14), transparent 65%),
-    var(--bg-card);
-  border: 1px solid var(--border-glass);
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(0.9rem, 1.3vw, 1.4rem);
+  background: ${({ $p }) => $p.bg};
+  color: ${({ $p }) => $p.fg};
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  border-radius: 6px;
   overflow: hidden;
-  transition: border-color 0.4s ease;
+  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s ease;
 
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 6px;
-    border: 1px solid rgba(201, 168, 76, 0.07);
-    pointer-events: none;
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
   }
 
   .index {
-    position: absolute;
-    top: 0.9rem;
-    left: 1rem;
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: 0.68rem;
     letter-spacing: 2px;
-    color: var(--text-muted);
+    opacity: 0.75;
+  }
+
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: ${({ $p }) => $p.chipBg};
+    color: ${({ $p }) => $p.chipFg};
+    white-space: nowrap;
   }
 
   .icon {
-    font-size: clamp(3rem, 5.5vw, 5.5rem);
-    color: rgba(201, 168, 76, 0.5);
-    transition: color 0.4s ease, transform 0.5s var(--ease-out-expo);
+    align-self: center;
+    font-size: clamp(3.5rem, 6.5vw, 6.5rem);
+    color: ${({ $p }) => $p.accent};
+    transition: transform 0.6s var(--ease-out-expo);
+  }
+
+  .name {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(1.3rem, 2vw, 2rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
   }
 
   &:hover {
-    border-color: rgba(201, 168, 76, 0.45);
-    .icon { color: var(--accent-gold); transform: scale(1.12) translateY(-4px); }
+    transform: translateY(-8px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    .icon { transform: scale(1.12) rotate(-4deg); }
   }
-`;
-
-const Caption = styled.div`
-  margin-top: 0.7rem;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  white-space: nowrap;
-
-  span { color: var(--accent-gold); margin: 0 0.45rem; }
-  em { font-style: normal; color: var(--text-muted); }
 `;
 
 const Note = styled.div`
@@ -441,16 +458,18 @@ const renderRow = (hidden) =>
       );
     }
     const v = VARIANTS[item.n % VARIANTS.length];
+    const pal = PALETTES[item.n % PALETTES.length];
     const Icon = item.skill.icon;
     return (
       <Item key={key} $v={v} aria-hidden={hidden || undefined}>
-        <Card $v={v}>
-          <span className="index">{String(item.n + 1).padStart(2, "0")}</span>
+        <Card $v={v} $p={pal}>
+          <div className="top">
+            <span className="index">{String(item.n + 1).padStart(2, "0")}</span>
+            <span className="chip">{item.category}</span>
+          </div>
           <Icon className="icon" />
+          <div className="name">{item.skill.name}</div>
         </Card>
-        <Caption>
-          {item.skill.name}<span>●</span><em>{item.category}</em>
-        </Caption>
       </Item>
     );
   });
@@ -469,7 +488,7 @@ const Skills = () => {
   const trackRef = useRef(null);
   const tickerRef = useRef(null);
 
-  useMarquee(sectionRef, trackRef, { base: 150, dir: 1, count: ROW.length, hoverSlow: true });
+  useMarquee(sectionRef, trackRef, { base: 150, dir: 1, count: ROW.length });
   useMarquee(sectionRef, tickerRef, { base: 90, dir: -1, count: ALL_SKILLS.length * 2 });
 
   useEffect(() => {
