@@ -1,292 +1,350 @@
 import React, { useEffect, useRef } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import gsap from "gsap";
-import { FiMail, FiGithub, FiLinkedin, FiPhone, FiMapPin } from "react-icons/fi";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { FiMail, FiGithub, FiLinkedin, FiPhone, FiMapPin, FiArrowUpRight } from "react-icons/fi";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const contactLinks = [
+  { icon: FiGithub, label: "GitHub", value: "Rizvi-Ahmed-Abbas-Nasir", href: "https://github.com/Rizvi-Ahmed-Abbas-Nasir", external: true },
+  { icon: FiLinkedin, label: "LinkedIn", value: "rizvi-ahmed-abbas-78b489222", href: "https://www.linkedin.com/in/rizvi-ahmed-abbas-78b489222/", external: true },
+  { icon: FiPhone, label: "Phone", value: "+91 93728 24575", href: "tel:+919372824575", external: false },
+  { icon: FiMapPin, label: "Location", value: "Mumbai, India", href: "https://maps.google.com/?q=Mumbai,India", external: true },
+];
+
+const EMAIL = "rizviahmedabbas313@gmail.com";
+
+const slide = keyframes`
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+`;
 
 const Section = styled.section`
-  padding: var(--section-padding) var(--container-padding);
   position: relative;
+  padding: clamp(2rem, 6vw, 4.5rem) 0 0;
+  overflow: hidden;
 `;
 
-const Container = styled.div`
-  max-width: 1100px;
+const Inner = styled.div`
+  max-width: 1300px;
   margin: 0 auto;
+  padding: 0 var(--container-padding);
 `;
 
-const Header = styled.div`
-  margin-bottom: 4rem;
-`;
-
-const Title = styled.h2`
+const Heading = styled.h2`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.22em;
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 5vw, 3.8rem);
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  margin-bottom: 0.75rem;
-  .italic { font-style: italic; color: var(--accent-gold); }
+  font-style: italic;
+  font-weight: 800;
+  font-size: clamp(3rem, 10.5vw, 9.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+
+  span { display: inline-block; will-change: transform; }
+  .gold { color: var(--accent-gold); }
 `;
 
-const Subtitle = styled.p`
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  max-width: 460px;
-  line-height: 1.8;
-`;
-
-const Grid = styled.div`
+const Cols = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  grid-template-columns: 1fr 1.25fr 1fr;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  margin-top: clamp(1.5rem, 4vh, 3rem);
+  align-items: start;
 
-  @media (max-width: 768px) {
+  @media (max-width: 860px) {
     grid-template-columns: 1fr;
+    gap: 1.2rem;
   }
 `;
 
-const Card = styled.a`
-  background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  padding: 1.75rem 2rem;
+const ColSide = styled.div`
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 1.6vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  text-align: ${({ $right }) => ($right ? "right" : "left")};
+  max-width: 280px;
+  margin-left: ${({ $right }) => ($right ? "auto" : "0")};
+
+  @media (max-width: 860px) { text-align: left; margin-left: 0; }
+`;
+
+const ColMid = styled.p`
+  font-family: var(--font-mono);
+  font-size: clamp(0.72rem, 1vw, 0.88rem);
+  letter-spacing: 1px;
+  line-height: 1.55;
+  text-transform: uppercase;
+  text-align: justify;
+  color: var(--text-secondary);
+`;
+
+const MailLink = styled.a`
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  transition: all 0.4s var(--ease-out-expo);
-  cursor: pointer;
-  text-decoration: none;
-  position: relative;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: clamp(2rem, 6vh, 4rem);
+  padding: clamp(1.2rem, 3vw, 2.2rem) 0;
+  border-top: 1px solid rgba(201, 168, 76, 0.3);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.3);
+  color: var(--accent-gold);
   overflow: hidden;
-  opacity: 0;
+  isolation: isolate;
 
   &::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--accent-gold);
-    transform: scaleY(0);
-    transition: transform 0.3s ease;
-    transform-origin: bottom;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(201,168,76,0.04), transparent);
-    opacity: 0;
-    transition: opacity 0.4s ease;
+    z-index: -1;
+    background: var(--accent-gold);
+    transform: translateY(101%);
+    transition: transform 0.6s var(--ease-out-expo);
   }
 
-  .icon-wrapper {
-    width: 46px;
-    height: 46px;
-    border: 1px solid var(--border-glass);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.4s var(--ease-out-expo);
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
     flex-shrink: 0;
-    background: var(--bg-secondary);
-    position: relative;
-    z-index: 1;
-
-    svg {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      transition: color 0.3s;
-    }
+    transition: color 0.4s ease;
   }
 
-  .info {
-    position: relative;
-    z-index: 1;
-    .label {
-      font-family: var(--font-mono);
-      font-size: 0.62rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--text-muted);
-      margin-bottom: 0.25rem;
-    }
-    .value {
-      font-family: var(--font-body);
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      word-break: break-all;
-    }
+  .value {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(1.4rem, 4.6vw, 4.2rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    word-break: break-all;
+    transition: color 0.4s ease;
+  }
+
+  .arrow {
+    font-size: clamp(1.6rem, 4vw, 3.2rem);
+    flex-shrink: 0;
+    transition: transform 0.5s var(--ease-out-expo), color 0.4s ease;
   }
 
   &:hover {
-    background: var(--bg-card-hover);
-    border-color: rgba(201, 168, 76, 0.25);
-    transform: translateX(4px);
-
-    &::before { transform: scaleY(1); }
-    &::after { opacity: 1; }
-
-    .icon-wrapper {
-      background: var(--accent-gold);
-      border-color: var(--accent-gold);
-      svg { color: #0d0b08; }
-    }
+    &::before { transform: translateY(0); }
+    .label, .value, .arrow { color: #1f1606; }
+    .arrow { transform: translate(6px, -6px); }
   }
 `;
 
-const OrnamentDivider = styled.div`
-  display: flex;
+const Rows = styled.div`
+  margin-top: clamp(1.5rem, 4vh, 2.5rem);
+`;
+
+const Row = styled.a`
+  position: relative;
+  display: grid;
+  grid-template-columns: 3rem 9rem 1fr auto;
   align-items: center;
   gap: 1rem;
-  margin: 3rem 0;
-  color: var(--accent-gold);
-  opacity: 0.3;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 4px;
+  padding: clamp(1rem, 2.2vw, 1.6rem) 0.2rem;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.18);
+  color: var(--text-primary);
+  overflow: hidden;
+  isolation: isolate;
 
-  &::before,
-  &::after {
+  &::before {
     content: '';
-    flex: 1;
-    height: 1px;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
     background: var(--accent-gold);
-    opacity: 0.4;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    padding-left: 0.6rem;
+    transition: color 0.4s ease;
+  }
+
+  .label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    transition: color 0.4s ease;
+  }
+
+  .value {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(1.3rem, 3.2vw, 2.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    word-break: break-word;
+    transition: color 0.4s ease, transform 0.5s var(--ease-out-expo);
+  }
+
+  .arrow {
+    font-size: 1.5rem;
+    padding-right: 0.6rem;
+    color: var(--text-muted);
+    transition: transform 0.5s var(--ease-out-expo), color 0.4s ease;
+  }
+
+  &:hover {
+    &::before { transform: scaleY(1); }
+    .num, .label, .value, .arrow { color: #1f1606; }
+    .value { transform: translateX(10px); }
+    .arrow { transform: translate(4px, -4px); }
+  }
+
+  @media (max-width: 700px) {
+    grid-template-columns: 2.2rem 1fr auto;
+    .label { grid-column: 2 / 4; }
+    .value { grid-column: 2 / 3; }
+    .arrow { grid-column: 3 / 4; grid-row: 2; }
   }
 `;
 
-const OpenToWork = styled.div`
+const Band = styled.div`
+  margin-top: clamp(2.5rem, 7vh, 4.5rem);
+  background: var(--accent-gold);
+  color: #1f1606;
+  overflow: hidden;
+  padding: 0.9rem 0;
+`;
+
+const BandTrack = styled.div`
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 3rem;
-  padding: 1.25rem 1.75rem;
-  border: 1px solid rgba(201, 168, 76, 0.2);
-  border-left: 2px solid var(--accent-gold);
-  background: rgba(201, 168, 76, 0.03);
-  font-family: var(--font-body);
-  font-size: 0.92rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
+  width: max-content;
+  animation: ${slide} 28s linear infinite;
+  will-change: transform;
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2vw, 2rem);
+    padding-right: clamp(1rem, 2vw, 2rem);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(1.6rem, 3.6vw, 3rem);
+    line-height: 1.1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
 
   .dot {
-    width: 8px;
-    height: 8px;
+    width: 0.6em;
+    height: 0.6em;
     border-radius: 50%;
-    background: var(--accent-gold);
+    background: #1f1606;
     flex-shrink: 0;
-    box-shadow: 0 0 8px rgba(201,168,76,0.5);
-    animation: pulse-glow 2s ease-in-out infinite;
-  }
-
-  strong {
-    color: var(--accent-gold);
   }
 `;
 
-const contactLinks = [
-  {
-    icon: FiMail,
-    label: "Email",
-    value: "rizviahmedabbas313@gmail.com",
-    href: "mailto:rizviahmedabbas313@gmail.com",
-  },
-  {
-    icon: FiGithub,
-    label: "GitHub",
-    value: "Rizvi-Ahmed-Abbas-Nasir",
-    href: "https://github.com/Rizvi-Ahmed-Abbas-Nasir",
-  },
-  {
-    icon: FiLinkedin,
-    label: "LinkedIn",
-    value: "rizvi-ahmed-abbas-78b489222",
-    href: "https://www.linkedin.com/in/rizvi-ahmed-abbas-78b489222/",
-  },
-  {
-    icon: FiPhone,
-    label: "Phone",
-    value: "+91 93728 24575",
-    href: "tel:+919372824575",
-  },
-  {
-    icon: FiMapPin,
-    label: "Location",
-    value: "Mumbai, India",
-    href: "https://maps.google.com/?q=Mumbai,India",
-  },
-];
+const BAND_WORDS = ["Open to work", "Full stack", "AI / ML", "Automation", "Mumbai or remote", "Let's talk"];
+
+const renderBand = (hidden) =>
+  BAND_WORDS.map((w, i) => (
+    <span className="item" key={`${hidden ? "b" : "a"}-${i}`} aria-hidden={hidden || undefined}>
+      {w}
+      <i className="dot" />
+    </span>
+  ));
 
 const Contact = () => {
-  const cardsRef = useRef([]);
-  const headerRef = useRef(null);
+  const headRef = useRef(null);
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+  const rowsRef = useRef([]);
+  const mailRef = useRef(null);
 
   useEffect(() => {
-    gsap.set(headerRef.current, { opacity: 0, y: 30 });
-    gsap.to(headerRef.current, {
-      opacity: 1, y: 0, duration: 0.9, ease: "power3.out",
-      scrollTrigger: { trigger: headerRef.current, start: "top 85%", toggleActions: "play none none reverse" },
-    });
+    const ctx = gsap.context(() => {
+      const trigger = { trigger: headRef.current, start: "top 90%", end: "top 35%", scrub: 0.6 };
+      gsap.fromTo(leftRef.current, { xPercent: -45 }, { xPercent: 0, ease: "none", scrollTrigger: trigger });
+      gsap.fromTo(rightRef.current, { xPercent: 45 }, { xPercent: 0, ease: "none", scrollTrigger: trigger });
 
-    cardsRef.current.forEach((el, i) => {
-      if (!el) return;
-      gsap.to(el, {
-        opacity: 1, y: 0, duration: 0.6, delay: i * 0.1, ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none reverse" },
+      [mailRef.current, ...rowsRef.current].forEach((el) => {
+        if (!el) return;
+        gsap.from(el, {
+          y: 40, opacity: 0, duration: 0.7, ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 92%", once: true },
+        });
       });
     });
+    return () => ctx.revert();
   }, []);
 
   return (
     <Section id="contact">
-      <Container>
-        <div className="section-label">Get In Touch</div>
-        <Header ref={headerRef}>
-          <Title>
-            Let's <span className="italic">Work Together</span>
-          </Title>
-          <Subtitle>
-            Open to new opportunities, collaborations, and interesting projects.
-            Reach out through any channel below.
-          </Subtitle>
-        </Header>
+      <Inner>
+        <Heading ref={headRef}>
+          <span ref={leftRef}>Let's Work</span>
+          <span ref={rightRef} className="gold">Together</span>
+        </Heading>
 
-        <OrnamentDivider>✦ &nbsp; Contact Channels &nbsp; ✦</OrnamentDivider>
+        <Cols>
+          <ColSide $right>Got a project in mind?</ColSide>
+          <ColMid>
+            I'm open to new opportunities, collaborations and interesting projects. Reach out
+            through any channel below and I'll get back to you.
+          </ColMid>
+          <ColSide>Let's talk.</ColSide>
+        </Cols>
 
-        <Grid>
-          {contactLinks.map((link, index) => {
+        <MailLink ref={mailRef} href={`mailto:${EMAIL}`}>
+          <span className="label"><FiMail style={{ verticalAlign: "-2px", marginRight: "0.5rem" }} />Email</span>
+          <span className="value">{EMAIL}</span>
+          <FiArrowUpRight className="arrow" />
+        </MailLink>
+
+        <Rows>
+          {contactLinks.map((link, i) => {
             const Icon = link.icon;
             return (
-              <Card
+              <Row
                 key={link.label}
                 href={link.href}
-                target={link.label !== "Email" && link.label !== "Phone" ? "_blank" : undefined}
+                target={link.external ? "_blank" : undefined}
                 rel="noopener noreferrer"
-                ref={(el) => (cardsRef.current[index] = el)}
-                style={{ transform: "translateY(20px)" }}
+                ref={(el) => (rowsRef.current[i] = el)}
               >
-                <div className="icon-wrapper">
-                  <Icon />
-                </div>
-                <div className="info">
-                  <div className="label">{link.label}</div>
-                  <div className="value">{link.value}</div>
-                </div>
-              </Card>
+                <span className="num">{String(i + 1).padStart(2, "0")}</span>
+                <span className="label"><Icon />{link.label}</span>
+                <span className="value">{link.value}</span>
+                <FiArrowUpRight className="arrow" />
+              </Row>
             );
           })}
-        </Grid>
+        </Rows>
+      </Inner>
 
-        <OpenToWork>
-          <span className="dot" />
-          <span>
-            <strong>Open to Work</strong> — Currently available for Full Stack, AI/ML,
-            or Automation roles in Mumbai or remote.
-          </span>
-        </OpenToWork>
-      </Container>
+      <Band>
+        <BandTrack>
+          {renderBand(false)}
+          {renderBand(true)}
+        </BandTrack>
+      </Band>
     </Section>
   );
 };
