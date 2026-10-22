@@ -24,8 +24,8 @@ const REEL = [
 ];
 
 const stats = [
-  { number: "3+", label: "Years Experience" },
-  { number: "10+", label: "Projects" },
+  { number: "5+", label: "Years Experience" },
+  { number: "15+", label: "Projects" },
   { number: "4", label: "Hackathon Wins" },
 ];
 
