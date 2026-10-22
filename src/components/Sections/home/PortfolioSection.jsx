@@ -10,6 +10,9 @@ gsap.registerPlugin(ScrollTrigger);
 /* ── Multi-image imports per project ── */
 
 // MEA BMC
+import hiclinicDashboard from '../../../assets/projects/hiclinic-dashboard.png';
+import hiclinicIntegrations from '../../../assets/projects/hiclinic-integrations.png';
+import hiclinicInfra from '../../../assets/projects/hiclinic-infra.png';
 import meabmc1  from '../../../assets/projects/imprtant mea bmc.png';
 import meabmc2  from '../../../assets/projects/mea bmc- 2.png';
 import meabmc3  from '../../../assets/projects/mea bmc- 2 (2).png';
@@ -597,6 +600,23 @@ const ModalImageWrapper = styled.div`
 
 /* ─────────────────── Project Data ─────────────────── */
 const allProjects = [
+  // ── Featured: HiClinic AI Receptionist ──
+  {
+    category: "Voice AI",
+    name: "HiClinic — AI Receptionist for Clinics",
+    year: "2025",
+    tech: ["Voice AI", "OpenAPI", "Webhooks", "Browser Automation"],
+    metric: { val: "Canada", lbl: "Clinics" },
+    imgs: [hiclinicDashboard, hiclinicIntegrations, hiclinicInfra],
+    url: null,
+    detailsText: "A voice AI receptionist for Canadian clinics. It answers patient calls, then books, reschedules and cancels appointments and syncs every change straight into the clinic's EMR, so front-desk staff never touch the phone. I worked on it as a full stack AI engineer, focused on the EMR integration layer.",
+    detailsFeatures: [
+      "Built the HiClinic EMR integrations using OpenAPI specs and custom-action webhooks, so the voice agent can look up patients, list services and providers, and book in real time.",
+      "Delivered official partner integrations with OSCAR and Juno, and API-key integrations with Cliniko and Juvonno.",
+      "For EMRs with no public API (Jane and Walnut EMR), engineered browser-automation integrations that read availability and write bookings, reschedules and cancellations.",
+      "Run the sync as Postgres-backed services, with a call dashboard tracking calls, triggered actions and sentiment."
+    ]
+  },
   // ── REQUESTED ORDER: MEA BMC first ──
   {
     category: "Full Stack Web",
@@ -845,7 +865,7 @@ const allProjects = [
   }
 ];
 
-const categories = ["All", "Full Stack Web", "AI & RAG", "Automation"];
+const categories = ["All", "Voice AI", "Full Stack Web", "AI & RAG", "Automation"];
 
 /* ─────────────────── ProjectCardItem (hover cross-fade) ─────────────────── */
 const ProjectCardItem = ({ project, cardRef, onOpenDetails }) => {

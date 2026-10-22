@@ -158,10 +158,22 @@ const Divider = styled.div`
 
 const experiences = [
   {
+    company: "webdew",
+    role: "Senior Full Stack AI Engineer",
+    dateRange: "Jul 2025 — Present",
+    location: "Surrey, British Columbia · Remote",
+    achievements: [
+      "Built the integration layer for <strong>HiClinic</strong>, an AI voice receptionist for Canadian clinics that automates <strong>booking, rescheduling and cancelling</strong> and syncs every change into the clinic's EMR.",
+      "Engineered complex EMR integrations using <strong>OpenAPI</strong> and <strong>custom-action webhooks</strong>: official partner integrations with <strong>OSCAR</strong> and <strong>Juno</strong>, and API-key integrations with <strong>Cliniko</strong> and <strong>Juvonno</strong>.",
+      "Where no public API exists, built <strong>browser-automation integrations</strong> for <strong>Jane</strong> and <strong>Walnut EMR</strong> with Postgres-backed sync services.",
+      "Designed agentic automation workflows end to end across web, backend and AI systems.",
+    ],
+  },
+  {
     company: "Thinkbar",
     role: "Full Stack AI Engineer",
-    dateRange: "Jan 2026 — Present",
-    location: "Mumbai Central · Onsite",
+    dateRange: "Jan 2025 — Jul 2025",
+    location: "Mumbai Metropolitan Region · Hybrid",
     achievements: [
       "Built <strong>SEO automation</strong> using n8n and AI tools, reducing manual work from <strong>3 days to 2 hours</strong>.",
       "Developed lead generation automation pipelines, generating <strong>100+ leads</strong> with 2 direct conversions.",
@@ -171,9 +183,9 @@ const experiences = [
   },
   {
     company: "CleverStudio",
-    role: "MERN Stack Developer",
-    dateRange: "May 2024 — Dec 2025",
-    location: "Mumbai · Hybrid",
+    role: "Full Stack Developer",
+    dateRange: "May 2023 — Jun 2024",
+    location: "Mumbai, Maharashtra · On-site",
     achievements: [
       "Delivered <strong>10+ client applications</strong> with scalable backends and optimised frontends.",
       "Deployed <strong>AWS REST APIs</strong> on EC2 and S3 for reliable cloud integrations.",
@@ -183,9 +195,9 @@ const experiences = [
   },
   {
     company: "Perulima Motors",
-    role: "Full Stack Developer",
-    dateRange: "May 2022 — Apr 2024",
-    location: "Mumbai · Onsite",
+    role: "Full-stack Developer",
+    dateRange: "Jun 2021 — Nov 2023",
+    location: "Vasai Virar, Maharashtra · On-site",
     achievements: [
       "Built a <strong>React landing page</strong> with dynamic animations and a user-friendly interface.",
       "Implemented a <strong>Django-based backend</strong> with Google OAuth, secure session handling, and authentication.",
