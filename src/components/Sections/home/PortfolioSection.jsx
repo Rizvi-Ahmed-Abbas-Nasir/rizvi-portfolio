@@ -603,7 +603,7 @@ const allProjects = [
   // ── Featured: HiClinic AI Receptionist ──
   {
     category: "Voice AI",
-    name: "HiClinic — AI Receptionist for Clinics",
+    name: "HiClinic AI Receptionist for Clinics",
     year: "2025",
     tech: ["Voice AI", "OpenAPI", "Webhooks", "Browser Automation"],
     metric: { val: "Canada", lbl: "Clinics" },
@@ -620,7 +620,7 @@ const allProjects = [
   // ── REQUESTED ORDER: MEA BMC first ──
   {
     category: "Full Stack Web",
-    name: "MEA BMC — Government Dashboard",
+    name: "MEA BMC Government Dashboard",
     year: "2025",
     tech: ["Next.js", "Node.js", "MySQL", "JWT"],
     metric: { val: "Gov", lbl: "Prod" },
@@ -654,7 +654,7 @@ const allProjects = [
   // ── Dware Rent a Car third ──
   {
     category: "Full Stack Web",
-    name: "Dwarentacar — Car Rental Platform",
+    name: "Dwarentacar Car Rental Platform",
     year: "2024",
     tech: ["React", "Node.js", "Express", "MongoDB"],
     metric: { val: "UAE", lbl: "Market" },
@@ -671,7 +671,7 @@ const allProjects = [
   // ── Miles India fourth ──
   {
     category: "Full Stack Web",
-    name: "Miles India — Travel Platform",
+    name: "Miles India Travel Platform",
     year: "2024",
     tech: ["React", "Node.js", "MySQL", "AWS"],
     metric: { val: "Live", lbl: "Production" },
@@ -688,7 +688,7 @@ const allProjects = [
   // ── Thinkbar fifth ──
   {
     category: "Full Stack Web",
-    name: "Thinkbar — AI-Powered Agency",
+    name: "Thinkbar AI-Powered Agency",
     year: "2026",
     tech: ["Next.js", "n8n", "AI/LLM", "Node.js"],
     metric: { val: "Live", lbl: "Production" },
@@ -704,7 +704,7 @@ const allProjects = [
   },
   {
     category: "AI & RAG",
-    name: "RIKO — AI-Powered Assistant",
+    name: "RIKO AI-Powered Assistant",
     year: "2025",
     tech: ["Next.js", "OpenAI", "LangChain", "RAG"],
     metric: { val: "AI", lbl: "Powered" },
@@ -736,7 +736,7 @@ const allProjects = [
   },
   {
     category: "Full Stack Web",
-    name: "Azzirevents — Event Management",
+    name: "Azzirevents Event Management",
     year: "2025",
     tech: ["Next.js", "Node.js", "Stripe", "MongoDB"],
     metric: { val: "Live", lbl: "Events" },
@@ -752,7 +752,7 @@ const allProjects = [
   },
   {
     category: "Full Stack Web",
-    name: "Oaktree — Premium Platform",
+    name: "Oaktree Premium Platform",
     year: "2024",
     tech: ["Next.js", "React", "MySQL"],
     metric: { val: "Live", lbl: "Production" },
@@ -768,7 +768,7 @@ const allProjects = [
   },
   {
     category: "Full Stack Web",
-    name: "EvoHerbals — E-Commerce",
+    name: "EvoHerbals E-Commerce",
     year: "2023",
     tech: ["Next.js", "Shopify API", "Tailwind"],
     metric: { val: "Live", lbl: "Store" },
